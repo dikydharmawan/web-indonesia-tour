@@ -1,0 +1,36 @@
+{
+  "name": "indonesia-virtual-tour",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "db:setup": "node scripts/db-setup.mjs"
+  },
+  "dependencies": {
+    "framer-motion": "14.4.0",
+    "leaflet": "1.9.4",
+    "lucide-react": "1.60.0",
+    "next": "16.4.2",
+    "pannellum": "2.5.7",
+    "pg": "^8.23.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-leaflet": "5.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/leaflet": "1.9.21",
+    "@types/node": "24.10.1",
+    "@types/pannellum": "2.5.2",
+    "@types/pg": "^8.23.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.4.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  }
+}
