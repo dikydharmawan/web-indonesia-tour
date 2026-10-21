@@ -67,11 +67,6 @@ export default async function SiteFooter() {
           </h2>
           <ul className="mt-4 space-y-3 text-sm">
             <li>
-              <Link href="/admin" className="transition hover:text-white">
-                {dict.footer.adminDashboard}
-              </Link>
-            </li>
-            <li>
               <Link href="/login" className="transition hover:text-white">
                 {dict.footer.login}
               </Link>
