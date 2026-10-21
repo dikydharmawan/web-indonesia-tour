@@ -66,11 +66,6 @@ export default async function SiteFooter() {
             {dict.footer.manage}
           </h2>
           <ul className="mt-4 space-y-3 text-sm">
-            <li>
-              <Link href="/login" className="transition hover:text-white">
-                {dict.footer.login}
-              </Link>
-            </li>
             <li className="inline-flex items-center gap-2 text-slate-400">
               <AtSign className="h-4 w-4" aria-hidden />
               @jelajahnusantara
