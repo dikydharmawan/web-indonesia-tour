@@ -21,8 +21,16 @@ function connectionString(): string {
 
 function getPool(): Pool {
   if (!pool) {
+    const connStr = connectionString();
+    // Add uselibpqcompat for compatibility with pg-connection-string v3+
+    const connectionStringWithCompat = connStr.includes("uselibpqcompat")
+      ? connStr
+      : connStr.includes("?")
+        ? `${connStr}&uselibpqcompat=true`
+        : `${connStr}?uselibpqcompat=true`;
+
     pool = new Pool({
-      connectionString: connectionString(),
+      connectionString: connectionStringWithCompat,
       max: 5,
       idleTimeoutMillis: 30_000,
       connectionTimeoutMillis: 10_000,
