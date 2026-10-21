@@ -273,81 +273,58 @@ create policy "media_delete_auth"
 insert into public.destinations
   (title, slug, description, category, city, cover_image, panorama_url, lat, lng, ticket_info, opening_hours, facilities)
 values
-  ('Candi Borobudur', 'candi-borobudur',
-   'Candi Borobudur adalah monumen Buddha Mahayana terbesar di dunia yang dibangun pada abad ke-9 oleh dinasti Syailendra. Struktur bertingkat yang menyerupai mandala ini terdiri dari sepuluh teras dengan 504 arca Buddha dan lebih dari 2.600 panel relief yang menceritakan perjalanan spiritual.
-
-Saat matahari terbit, kabut tipis di lembah Magelang membingkai stupa-stupa yang mulai tersentuh cahaya keemasan. Pengunjung dapat menelusuri lorong relief, duduk hening di teras atas, atau menyaksikan panorama pegunungan Menoreh dari ketinggian.
-
-Gunakan pakaian yang sopan dan nyaman untuk berjalan. Datang lebih awal agar sempat menikmati suasana sebelum kawasan dipenuhi rombongan wisata.',
-   'Budaya', 'Magelang',
-   '/demo/covers/borobudur.jpg', '/demo/panoramas/borobudur.jpg',
-   -7.607874, 110.203885,
-   '{"adult": 50000, "child": 25000, "notes": "Tiket terusan dengan Candi Prambanan tersedia."}'::jsonb,
-   '{"open": "06:30", "close": "17:00", "days": ["Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
-   array['Parkir', 'Musholla', 'Toilet', 'Kantin', 'Pemandu']),
-  ('Candi Prambanan', 'candi-prambanan',
-   'Kompleks Candi Prambanan didedikasikan untuk Trimurti — Brahma, Wisnu, dan Siwa — dan merupakan candi Hindu terbesar di Indonesia. Tiga candi utama menjulang hingga 47 meter, dikelilingi ratusan candi perwara yang tersusun rapi.
-
-Relief Ramayana yang terpahat di dinding candi Siwa menjadi salah satu mahakarya seni klasik Nusantara. Menjelang senja, siluet spire yang runcing berpadu dengan langit jingga menciptakan pemandangan yang dramatis.
-
-Pertunjukan Sendratari Ramayana di panggung terbuka menjadi penutup yang sempurna bila Anda berkunjung pada malam hari.',
-   'Budaya', 'Sleman',
-   '/demo/covers/prambanan.jpg', '/demo/panoramas/prambanan.jpg',
-   -7.752022, 110.491391,
-   '{"adult": 50000, "child": 25000, "notes": "Tiket sendratari dijual terpisah."}'::jsonb,
-   '{"open": "06:30", "close": "18:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
-   array['Parkir', 'Musholla', 'Toilet', 'Museum', 'Kantin']),
-  ('Jalan Malioboro', 'malioboro',
-   'Malioboro adalah denyut nadi Yogyakarta. Sepanjang jalan ini berjajar pedagang batik, penjual gudeg, seniman jalanan, dan bangunan kolonial yang menyimpan sejarah panjang kota.
-
-Mulai dari Titik Nol Kilometer, susuri trotoar yang lebar menuju Pasar Beringharjo. Saat malam tiba, lampu-lampu kuning dan pedagang lesehan menghidupkan suasana hingga larut.
-
-Cicipi gudeg, wedang ronde, dan bakpia hangat. Tawar-menawar adalah bagian dari pengalaman berbelanja di sini.',
-   'Belanja', 'Yogyakarta',
-   '/demo/covers/malioboro.jpg', '/demo/panoramas/malioboro.jpg',
-   -7.792530, 110.365836,
-   null,
-   '{"open": "00:00", "close": "23:59", "days": ["Setiap hari"], "notes": "Pedagang lesehan ramai mulai pukul 18.00."}'::jsonb,
-   array['Kuliner', 'Pusat Oleh-oleh', 'Hotel', 'ATM']),
-  ('Pantai Parangtritis', 'pantai-parangtritis',
-   'Pantai Parangtritis di Bantul terkenal dengan pasir hitamnya, ombak Samudra Hindia yang besar, dan legenda Ratu Kidul yang melekat di masyarakat. Garis pantai panjangnya menjadi tempat favorit untuk menikmati matahari terbenam.
-
-Dari bukit Paralayang di dekatnya, Anda dapat melihat seluruh teluk dengan gumuk pasir (sand dunes) yang unik — fenomena langka di Asia Tenggara.
-
-Arus laut di pantai ini cukup kuat, jadi tetap di area yang diawasi penjaga pantai dan jangan berenang terlalu jauh.',
-   'Alam', 'Bantul',
-   '/demo/covers/parangtritis.jpg', '/demo/panoramas/parangtritis.jpg',
-   -8.023424, 110.334687,
-   '{"vehicle": 10000, "notes": "Retribusi kendaraan roda empat."}'::jsonb,
-   '{"open": "06:00", "close": "18:00", "days": ["Setiap hari"]}'::jsonb,
-   array['Parkir', 'Warung', 'ATV', 'Kuda', 'Toilet'])
+  ('Kawah Ijen', 'kawah-ijen',
+   'Kawah Ijen adalah danau kawah asam terbesar di dunia yang terletak di perbatasan Kabupaten Banyuwangi dan Kabupaten Bondowoso. Fenomena api biru (blue fire) yang muncul di malam hari adalah daya tarik utama yang mendunia. Selain itu, pengunjung dapat menyaksikan penambang belerang yang bekerja keras di tengah asap belerang yang tajam.',
+   'Alam', 'Banyuwangi',
+   '/demo/covers/ijen.jpg', '/demo/panoramas/ijen.jpg',
+   -8.0583, 114.2411,
+   '{"adult": 10000, "child": 5000, "notes": "Harga tiket untuk wisatawan domestik."}'::jsonb,
+   '{"open": "02:00", "close": "12:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
+   array['Parkir', 'Toilet', 'Warung', 'Pemandu']),
+  ('Pantai Pulau Merah', 'pantai-pulau-merah',
+   'Pantai Pulau Merah atau Red Island Beach terkenal dengan bukit kecil bertanah merah di tengah pantai yang bisa dicapai saat air surut. Pantai ini populer bagi peselancar pemula karena ombaknya yang cukup ramah.',
+   'Alam', 'Banyuwangi',
+   '/demo/covers/pulau-merah.jpg', '/demo/panoramas/pulau-merah.jpg',
+   -8.5833, 114.0333,
+   '{"adult": 10000, "child": 5000, "notes": "Retribusi masuk kawasan."}'::jsonb,
+   '{"open": "06:00", "close": "18:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
+   array['Parkir', 'Toilet', 'Warung', 'Penyewaan Papan Selancar']),
+  ('Taman Nasional Baluran', 'tn-baluran',
+   'Taman Nasional Baluran sering disebut sebagai ''Afrika van Java'' karena padang savana yang luas dengan latar belakang Gunung Baluran. Anda bisa melihat kawanan rusa dan merak liar di sini.',
+   'Alam', 'Banyuwangi',
+   '/demo/covers/baluran.jpg', '/demo/panoramas/baluran.jpg',
+   -7.8286, 114.3989,
+   '{"adult": 15000, "child": 10000, "notes": "Tiket masuk kawasan konservasi."}'::jsonb,
+   '{"open": "07:30", "close": "16:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
+   array['Parkir', 'Toilet', 'Warung', 'Pemandu']),
+  ('Taman Nasional Alas Purwo', 'tn-alas-purwo',
+   'Alas Purwo adalah taman nasional dengan hutan hujan tropis, hutan bambu, dan pantai-pantai yang masih asri. Kawasan ini dikenal karena kekayaan flora, fauna, dan nilai spiritualnya yang tinggi.',
+   'Alam', 'Banyuwangi',
+   '/demo/covers/alas-purwo.jpg', '/demo/panoramas/alas-purwo.jpg',
+   -8.6667, 114.3333,
+   '{"adult": 5000, "child": 3000, "notes": "Tiket masuk hutan wisata."}'::jsonb,
+   '{"open": "07:00", "close": "17:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
+   array['Parkir', 'Toilet', 'Warung'])
 on conflict (slug) do nothing;
 
 insert into public.routes (title, slug, summary, duration_days, cover_image, status)
 values
-  ('Jogja Heritage 2 Hari', 'jogja-heritage-2-hari',
-   'Perjalanan budaya dua hari: menyapa matahari terbit di Borobudur, menelusuri relief Prambanan, berburu oleh-oleh di Malioboro, lalu menutup hari di hamparan Pantai Parangtritis.',
-   2, '/demo/covers/jogja-heritage.jpg', 'published'),
-  ('Sehari Menjelajah Jogja', 'sehari-menjelajah-jogja',
-   'Rute padat namun nyaman untuk pengunjung dengan waktu terbatas. Mulai dari keajaiban Borobudur, merasakan riuhnya Malioboro, dan ditutup senja di Parangtritis.',
-   1, '/demo/covers/malioboro.jpg', 'published'),
-  ('Eksplorasi Candi', 'eksplorasi-candi',
-   'Rute khusus pencinta sejarah yang membahas dua candi terbesar Indonesia dalam satu hari. Masih dalam tahap penyusunan.',
-   1, '/demo/covers/prambanan.jpg', 'draft')
+  ('Jelajah Banyuwangi 2 Hari', 'jelajah-banyuwangi-2-hari',
+   'Perjalanan alam dua hari: menikmati savanna Baluran, keindahan Pulau Merah, serta petualangan Ijen.',
+   2, '/demo/covers/ijen.jpg', 'published'),
+  ('Eksplorasi Alam Banyuwangi', 'eksplorasi-alam-banyuwangi',
+   'Rute lengkap menjelajahi kekayaan alam Banyuwangi mulai dari Baluran hingga Alas Purwo.',
+   1, '/demo/covers/baluran.jpg', 'published')
 on conflict (slug) do nothing;
 
 insert into public.route_items (route_id, destination_id, order_index, time_schedule, notes)
 select r.id, d.id, v.order_index, v.time_schedule, v.notes
 from (values
-  ('jogja-heritage-2-hari', 'candi-borobudur',     0, 'Hari 1 — 06:00', 'Titik kumpul di pintu masuk utara. Jangan lewatkan matahari terbit.'),
-  ('jogja-heritage-2-hari', 'candi-prambanan',     1, 'Hari 1 — 15:00', 'Saksikan Sendratari Ramayana bila berkunjung di akhir pekan.'),
-  ('jogja-heritage-2-hari', 'malioboro',           2, 'Hari 2 — 10:00', 'Jalan kaki dari Titik Nol Kilometer menuju Pasar Beringharjo.'),
-  ('jogja-heritage-2-hari', 'pantai-parangtritis', 3, 'Hari 2 — 16:00', 'Menikmati matahari terbenam dari area pantai yang diawasi.'),
-  ('sehari-menjelajah-jogja', 'candi-borobudur',     0, '07:00', 'Mulai pagi agar tidak terlalu panas saat menaiki teras candi.'),
-  ('sehari-menjelajah-jogja', 'malioboro',           1, '12:00', 'Makan siang gudeg lalu berbelanja batik dan bakpia.'),
-  ('sehari-menjelajah-jogja', 'pantai-parangtritis', 2, '16:00', 'Bawa jaket tipis karena angin pantai cukup kencang.'),
-  ('eksplorasi-candi', 'candi-borobudur', 0, '08:00', 'Tur berpemandu relief Borobudur.'),
-  ('eksplorasi-candi', 'candi-prambanan', 1, '14:00', 'Lanjut ke Prambanan dan museum interpretasi.')
+  ('jelajah-banyuwangi-2-hari', 'kawah-ijen',         0, 'Hari 1 — 02:00', 'Wajib menggunakan masker gas untuk Ijen.'),
+  ('jelajah-banyuwangi-2-hari', 'pantai-pulau-merah', 1, 'Hari 1 — 14:00', 'Menikmati matahari terbenam.'),
+  ('jelajah-banyuwangi-2-hari', 'tn-baluran',         2, 'Hari 2 — 08:00', 'Melihat savana Afrika van Java.'),
+  ('eksplorasi-alam-banyuwangi', 'tn-baluran',        0, '08:00', 'Mengunjungi savana di pagi hari.'),
+  ('eksplorasi-alam-banyuwangi', 'tn-alas-purwo',     1, '13:00', 'Menjelajahi hutan dan pantai.')
 ) as v(route_slug, dest_slug, order_index, time_schedule, notes)
 join public.destinations d on d.slug = v.dest_slug
 join public.routes r       on r.slug = v.route_slug
