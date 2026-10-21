@@ -80,7 +80,7 @@ export default function Hero(props: HeroProps) {
           compass
           yaw={20}
           pitch={2}
-          hfov={105}
+          hfov={120}
           loadingText={dict.hero.loading}
           className="h-full w-full"
         />
