@@ -33,7 +33,15 @@ export default async function HomePage() {
     getFilterOptions(),
   ]);
 
-  const heroDestination = featured[0];
+  const heroItems = featured
+    .filter((destination) => destination.panorama_url)
+    .slice(0, 4)
+    .map((destination) => ({
+      title: destination.title,
+      location: destination.city,
+      panorama: destination.panorama_url,
+      preview: destination.cover_image,
+    }));
   const routeHighlights = routes.slice(0, 2);
 
   const steps = [
@@ -63,14 +71,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero
-        title={heroDestination?.title ?? "Candi Borobudur"}
-        location={heroDestination?.city ?? "Magelang"}
-        panorama={
-          heroDestination?.panorama_url ?? "/media/panoramas/borobudur.jpg"
-        }
-        preview={heroDestination?.cover_image ?? "/media/covers/borobudur.jpg"}
-      />
+      <Hero items={heroItems.length > 0 ? heroItems : undefined} />
 
       <section aria-label={dict.home.searchAria} className="relative z-20">
         <div className="mx-auto -mt-10 max-w-5xl px-4 sm:px-6 lg:px-8">
