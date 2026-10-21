@@ -7,6 +7,7 @@ export type DestinationPayload = {
   description: string | null;
   category: string | null;
   city: string | null;
+  kecamatan: string | null;
   cover_image: string | null;
   panorama_url: string | null;
   lat: number | null;
@@ -39,6 +40,7 @@ export function parseDestinationForm(formData: FormData): DestinationPayload {
     description: getOptional(formData, "description"),
     category: getOptional(formData, "category"),
     city: getOptional(formData, "city"),
+    kecamatan: getOptional(formData, "kecamatan"),
     cover_image: getOptional(formData, "cover_image"),
     panorama_url: getOptional(formData, "panorama_url"),
     lat: getNumber(formData, "lat"),

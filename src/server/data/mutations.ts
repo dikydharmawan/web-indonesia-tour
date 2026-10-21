@@ -20,9 +20,9 @@ export type RouteItemInput = {
 export async function insertDestination(input: DestinationInput): Promise<string> {
   const row = await query<{ id: string }>(
     `insert into public.destinations
-       (title, slug, description, category, city, cover_image, panorama_url,
+       (title, slug, description, category, city, kecamatan, cover_image, panorama_url,
         lat, lng, ticket_info, opening_hours, facilities)
-     values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10::jsonb,$11::jsonb,$12)
+     values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb,$12::jsonb,$13)
      returning id`,
     [
       input.title,
@@ -30,6 +30,7 @@ export async function insertDestination(input: DestinationInput): Promise<string
       input.description,
       input.category,
       input.city,
+      input.kecamatan,
       input.cover_image,
       input.panorama_url,
       input.lat,
@@ -48,9 +49,9 @@ export async function updateDestinationRow(
 ): Promise<void> {
   await query(
     `update public.destinations set
-       title=$2, slug=$3, description=$4, category=$5, city=$6,
-       cover_image=$7, panorama_url=$8, lat=$9, lng=$10,
-       ticket_info=$11::jsonb, opening_hours=$12::jsonb, facilities=$13,
+       title=$2, slug=$3, description=$4, category=$5, city=$6, kecamatan=$7,
+       cover_image=$8, panorama_url=$9, lat=$10, lng=$11,
+       ticket_info=$12::jsonb, opening_hours=$13::jsonb, facilities=$14,
        updated_at=now()
      where id=$1`,
     [
@@ -60,6 +61,7 @@ export async function updateDestinationRow(
       input.description,
       input.category,
       input.city,
+      input.kecamatan,
       input.cover_image,
       input.panorama_url,
       input.lat,

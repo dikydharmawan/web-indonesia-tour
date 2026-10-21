@@ -109,6 +109,19 @@ export default function DestinationForm({
               />
             </div>
 
+            <div>
+              <label htmlFor="kecamatan" className={labelClass}>
+                Kecamatan
+              </label>
+              <input
+                id="kecamatan"
+                name="kecamatan"
+                defaultValue={destination?.kecamatan ?? ""}
+                placeholder="Borobudur"
+                className={inputClass}
+              />
+            </div>
+
             <div className="sm:col-span-2">
               <label htmlFor="description" className={labelClass}>
                 Deskripsi

@@ -21,6 +21,7 @@ export type Destination = {
   description: string | null;
   category: string | null;
   city: string | null;
+  kecamatan: string | null;
   cover_image: string | null;
   panorama_url: string | null;
   lat: number | null;
