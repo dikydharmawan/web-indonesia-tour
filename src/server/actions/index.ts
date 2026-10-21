@@ -28,6 +28,7 @@ import {
   parseRouteItems,
   type RouteItemInput,
 } from "./route-payload";
+import { getKecamatan } from "@/server/utils/geocoding";
 
 async function requireAdmin() {
   const admin = await getCurrentAdmin();
@@ -82,6 +83,10 @@ export async function createDestination(formData: FormData) {
     redirect(flashUrl(path, "error", "Judul dan slug wajib diisi."));
   }
 
+  if (!payload.kecamatan && payload.lat && payload.lng) {
+    payload.kecamatan = await getKecamatan(payload.lat, payload.lng);
+  }
+
   await requireAdmin();
   try {
     await insertDestination(payload);
@@ -110,6 +115,10 @@ export async function updateDestination(formData: FormData) {
   const payload = parseDestinationForm(formData);
   if (!payload.title || !payload.slug) {
     redirect(flashUrl(path, "error", "Judul dan slug wajib diisi."));
+  }
+
+  if (!payload.kecamatan && payload.lat && payload.lng) {
+    payload.kecamatan = await getKecamatan(payload.lat, payload.lng);
   }
 
   await requireAdmin();
