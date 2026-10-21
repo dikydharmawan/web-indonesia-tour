@@ -705,8 +705,8 @@ const id: Dictionary = {
   },
   hero: {
     badge: "Virtual tour 360° · {location}",
-    titleLine1: "Saksikan Indonesia",
-    titleLine2: "sebelum kamu melangkah.",
+    titleLine1: "Jelajahi Wisata",
+    titleLine2: "Banyuwangi",
     description:
       "Putar panorama {title}, temukan destinasi tersembunyi, dan susun rute perjalanan yang pas — semua dalam satu tempat.",
     explore: "Jelajahi destinasi",
@@ -720,7 +720,7 @@ const id: Dictionary = {
     searchAria: "Pencarian destinasi",
     statDestinations: "Destinasi",
     statRoutes: "Rute terkurasi",
-    statCities: "Kota & kabupaten",
+    statCities: "Kecamatan",
     statPanoramas: "Panorama 360°",
     featuredEyebrow: "Pilihan editor",
     featuredTitle: "Destinasi yang wajib disaksikan",
