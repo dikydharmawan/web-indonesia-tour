@@ -106,9 +106,9 @@ export default function Hero(props: HeroProps) {
               {interpolate(dict.hero.badge, { location })}
             </Badge>
             <h1 className="font-display text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
-              {dict.hero.titleLine1}
+              Jelajahi Wisata
               <span className="block text-brand-200">
-                {dict.hero.titleLine2}
+                Bali
               </span>
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
