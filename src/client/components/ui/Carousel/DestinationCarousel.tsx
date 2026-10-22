@@ -1,39 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DestinationCard from "@/client/components/destinations/DestinationCard";
 import type { Destination } from "@/types/db";
 
 export default function DestinationCarousel({ destinations }: { destinations: Destination[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  
-  // For simplicity, showing 1 card at a time on mobile, 4 on desktop
-  // Need to adjust this for better responsiveness if possible, 
-  // but keeping it simple for now.
+
+  // Responsive: Show 1 on mobile, 2 on tablet, 4 on desktop
+  const itemsPerView = {
+    mobile: 1,
+    tablet: 2,
+    desktop: 4,
+  };
 
   const next = () => {
-    setCurrentIndex((prev) => (prev + 1) % destinations.length);
+    setCurrentIndex((prev) => (prev + 1) % Math.max(1, destinations.length - itemsPerView.desktop + 1));
   };
 
   const prev = () => {
-    setCurrentIndex((prev) => (prev - 1 + destinations.length) % destinations.length);
+    setCurrentIndex((prev) => Math.max(0, prev - 1));
   };
 
   return (
-    <div className="relative mt-10">
-      <div className="flex items-center justify-between gap-4 overflow-hidden">
+    <div className="relative mt-10 w-full">
+      <div className="relative overflow-hidden w-full">
+        {/* Buttons */}
         <button
           onClick={prev}
-          className="absolute left-0 z-10 p-2 bg-white rounded-full shadow-lg border border-slate-200"
+          disabled={currentIndex === 0}
+          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 p-2 bg-white rounded-full shadow-lg border border-slate-200 disabled:opacity-50"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         
-        <div className="flex gap-6 w-full px-10">
+        {/* Carousel Track */}
+        <div 
+          className="flex gap-6 transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView.desktop)}%)` }}
+        >
             {destinations.map((destination, index) => (
-                <div key={destination.id} className="min-w-[250px] flex-1">
+                <div key={destination.id} className="min-w-[25%] flex-shrink-0 px-3">
                     <DestinationCard destination={destination} priority={index === 0} />
                 </div>
             ))}
@@ -41,7 +49,8 @@ export default function DestinationCarousel({ destinations }: { destinations: De
 
         <button
           onClick={next}
-          className="absolute right-0 z-10 p-2 bg-white rounded-full shadow-lg border border-slate-200"
+          disabled={currentIndex >= destinations.length - itemsPerView.desktop}
+          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 p-2 bg-white rounded-full shadow-lg border border-slate-200 disabled:opacity-50"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
