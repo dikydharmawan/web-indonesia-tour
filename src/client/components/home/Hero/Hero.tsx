@@ -51,7 +51,7 @@ export default function Hero(props: HeroProps) {
 
   const active = items[index] ?? items[0];
   const title = active.title;
-  const location = active.location ?? "Bali";
+  const location = "Bali";
   const panorama = active.panorama ?? "/media/panoramas/borobudur.jpg";
   const preview = active.preview ?? undefined;
 
