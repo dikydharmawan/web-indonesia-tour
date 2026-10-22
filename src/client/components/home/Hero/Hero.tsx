@@ -43,7 +43,7 @@ export default function Hero(props: HeroProps) {
       : [
           {
             title: props.title ?? "Kawah Ijen",
-            location: props.location ?? "Banyuwangi",
+            location: props.location ?? "Bali",
             panorama: props.panorama ?? "/media/panoramas/borobudur.jpg",
             preview: props.preview ?? "/media/covers/borobudur.jpg",
           },
@@ -51,7 +51,7 @@ export default function Hero(props: HeroProps) {
 
   const active = items[index] ?? items[0];
   const title = active.title;
-  const location = active.location ?? "Banyuwangi";
+  const location = active.location ?? "Bali";
   const panorama = active.panorama ?? "/media/panoramas/borobudur.jpg";
   const preview = active.preview ?? undefined;
 

@@ -246,7 +246,7 @@ const en: Dictionary = {
   footer: {
     tagline:
       "A virtual tour and trip planning platform for Indonesia. Preview destinations in 360° panoramas, then build a journey that fits your time and interests.",
-    location: "Banyuwangi, Indonesia",
+    location: "Bali, Indonesia",
     explore: "Explore",
     allDestinations: "All destinations",
     routes: "Routes",
@@ -690,7 +690,7 @@ const id: Dictionary = {
   footer: {
     tagline:
       "Platform virtual tour dan perencanaan rute wisata Indonesia. Saksikan destinasi dalam panorama 360°, lalu susun perjalanan yang sesuai dengan waktu dan minat Anda.",
-    location: "Banyuwangi, Indonesia",
+    location: "Bali, Indonesia",
     explore: "Jelajahi",
     allDestinations: "Semua destinasi",
     routes: "Rute wisata",
@@ -706,7 +706,7 @@ const id: Dictionary = {
   hero: {
     badge: "Virtual tour 360° · {location}",
     titleLine1: "Jelajahi Wisata",
-    titleLine2: "Banyuwangi",
+    titleLine2: "Bali",
     description:
       "Putar panorama {title}, temukan destinasi tersembunyi, dan susun rute perjalanan yang pas — semua dalam satu tempat.",
     explore: "Jelajahi destinasi",

@@ -1,0 +1,22 @@
+{
+  "tour_package": {
+    "name": "Paket Eksplorasi Bali & Fantasi",
+    "destinations": [
+      {
+        "name": "Fly Bali",
+        "type": "Real",
+        "description": "Keliling Bali dengan helikopter"
+      },
+      {
+        "name": "Nuanu Creative City",
+        "type": "Real",
+        "description": "Magic Garden, Kec. Kediri, Kab. Tabanan, Bali"
+      },
+      {
+        "name": "CandyLand",
+        "type": "Fantasy",
+        "description": "Dunia permen"
+      }
+    ]
+  }
+}

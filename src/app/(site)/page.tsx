@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Hero from "@/client/components/home/Hero";
 import DestinationSearch from "@/client/components/destinations/DestinationSearch";
-import DestinationCard from "@/client/components/destinations/DestinationCard";
+import DestinationCarousel from "@/client/components/ui/Carousel/DestinationCarousel";
 import RouteCard from "@/client/components/routes/RouteCard";
 import SectionHeading from "@/client/components/ui/SectionHeading";
 import {
@@ -104,15 +104,7 @@ export default async function HomePage() {
             href="/destinasi"
             linkLabel={dict.home.featuredLink}
           />
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.map((destination, index) => (
-              <DestinationCard
-                key={destination.id}
-                destination={destination}
-                priority={index === 0}
-              />
-            ))}
-          </div>
+          <DestinationCarousel destinations={featured} />
         </div>
       </section>
 

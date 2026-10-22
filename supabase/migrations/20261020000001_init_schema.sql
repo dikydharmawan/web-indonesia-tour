@@ -273,58 +273,56 @@ create policy "media_delete_auth"
 insert into public.destinations
   (title, slug, description, category, city, cover_image, panorama_url, lat, lng, ticket_info, opening_hours, facilities)
 values
-  ('Kawah Ijen', 'kawah-ijen',
-   'Kawah Ijen adalah danau kawah asam terbesar di dunia yang terletak di perbatasan Kabupaten Banyuwangi dan Kabupaten Bondowoso. Fenomena api biru (blue fire) yang muncul di malam hari adalah daya tarik utama yang mendunia. Selain itu, pengunjung dapat menyaksikan penambang belerang yang bekerja keras di tengah asap belerang yang tajam.',
-   'Alam', 'Banyuwangi',
-   '/demo/covers/ijen.jpg', '/demo/panoramas/ijen.jpg',
-   -8.0583, 114.2411,
-   '{"adult": 10000, "child": 5000, "notes": "Harga tiket untuk wisatawan domestik."}'::jsonb,
-   '{"open": "02:00", "close": "12:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
-   array['Parkir', 'Toilet', 'Warung', 'Pemandu']),
-  ('Pantai Pulau Merah', 'pantai-pulau-merah',
-   'Pantai Pulau Merah atau Red Island Beach terkenal dengan bukit kecil bertanah merah di tengah pantai yang bisa dicapai saat air surut. Pantai ini populer bagi peselancar pemula karena ombaknya yang cukup ramah.',
-   'Alam', 'Banyuwangi',
-   '/demo/covers/pulau-merah.jpg', '/demo/panoramas/pulau-merah.jpg',
-   -8.5833, 114.0333,
-   '{"adult": 10000, "child": 5000, "notes": "Retribusi masuk kawasan."}'::jsonb,
-   '{"open": "06:00", "close": "18:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
-   array['Parkir', 'Toilet', 'Warung', 'Penyewaan Papan Selancar']),
-  ('Taman Nasional Baluran', 'tn-baluran',
-   'Taman Nasional Baluran sering disebut sebagai ''Afrika van Java'' karena padang savana yang luas dengan latar belakang Gunung Baluran. Anda bisa melihat kawanan rusa dan merak liar di sini.',
-   'Alam', 'Banyuwangi',
-   '/demo/covers/baluran.jpg', '/demo/panoramas/baluran.jpg',
-   -7.8286, 114.3989,
-   '{"adult": 15000, "child": 10000, "notes": "Tiket masuk kawasan konservasi."}'::jsonb,
-   '{"open": "07:30", "close": "16:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
-   array['Parkir', 'Toilet', 'Warung', 'Pemandu']),
-  ('Taman Nasional Alas Purwo', 'tn-alas-purwo',
-   'Alas Purwo adalah taman nasional dengan hutan hujan tropis, hutan bambu, dan pantai-pantai yang masih asri. Kawasan ini dikenal karena kekayaan flora, fauna, dan nilai spiritualnya yang tinggi.',
-   'Alam', 'Banyuwangi',
-   '/demo/covers/alas-purwo.jpg', '/demo/panoramas/alas-purwo.jpg',
-   -8.6667, 114.3333,
-   '{"adult": 5000, "child": 3000, "notes": "Tiket masuk hutan wisata."}'::jsonb,
-   '{"open": "07:00", "close": "17:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
-   array['Parkir', 'Toilet', 'Warung'])
-on conflict (slug) do nothing;
+  ('Fly Bali', 'fly-bali',
+   'Keliling Bali dengan helikopter',
+   'Real', 'Bali',
+   '/demo/covers/bali.jpg', '/demo/panoramas/bali.jpg',
+   -8.3405, 115.0920,
+   '{"adult": 1000000, "notes": "Harga per orang."}'::jsonb,
+   '{"open": "09:00", "close": "17:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
+   array['Helikopter', 'Pemandu']),
+  ('Nuanu Creative City', 'nuanu-creative-city',
+   'Magic Garden, Kec. Kediri, Kab. Tabanan, Bali',
+   'Real', 'Tabanan',
+   '/demo/covers/nuanu.jpg', '/demo/panoramas/nuanu.jpg',
+   -8.6250, 115.1100,
+   '{"adult": 50000, "notes": "Harga tiket masuk Magic Garden."}'::jsonb,
+   '{"open": "10:00", "close": "20:00", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
+   array['Parkir', 'Toilet', 'Taman']),
+  ('CandyLand', 'candyland',
+   'Dunia permen',
+   'Fantasy', 'Wisata',
+   '/demo/covers/candyland.jpg', '/demo/panoramas/candyland.jpg',
+   0.0, 0.0,
+   '{"adult": 0, "notes": "Gratis untuk semua."}'::jsonb,
+   '{"open": "00:00", "close": "23:59", "days": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]}'::jsonb,
+   array['Permen', 'Keajaiban'])
+on conflict (slug) do update set
+  title = excluded.title,
+  description = excluded.description,
+  category = excluded.category,
+  city = excluded.city,
+  cover_image = excluded.cover_image,
+  panorama_url = excluded.panorama_url,
+  lat = excluded.lat,
+  lng = excluded.lng,
+  ticket_info = excluded.ticket_info,
+  opening_hours = excluded.opening_hours,
+  facilities = excluded.facilities;
 
 insert into public.routes (title, slug, summary, duration_days, cover_image, status)
 values
-  ('Jelajah Banyuwangi 2 Hari', 'jelajah-banyuwangi-2-hari',
-   'Perjalanan alam dua hari: menikmati savanna Baluran, keindahan Pulau Merah, serta petualangan Ijen.',
-   2, '/demo/covers/ijen.jpg', 'published'),
-  ('Eksplorasi Alam Banyuwangi', 'eksplorasi-alam-banyuwangi',
-   'Rute lengkap menjelajahi kekayaan alam Banyuwangi mulai dari Baluran hingga Alas Purwo.',
-   1, '/demo/covers/baluran.jpg', 'published')
+  ('Eksplorasi Bali & Fantasi', 'eksplorasi-bali-fantasi',
+   'Keliling Bali dengan helikopter, menikmati Magic Garden, dan bermain di dunia permen.',
+   1, '/demo/covers/bali.jpg', 'published')
 on conflict (slug) do nothing;
 
 insert into public.route_items (route_id, destination_id, order_index, time_schedule, notes)
 select r.id, d.id, v.order_index, v.time_schedule, v.notes
 from (values
-  ('jelajah-banyuwangi-2-hari', 'kawah-ijen',         0, 'Hari 1 — 02:00', 'Wajib menggunakan masker gas untuk Ijen.'),
-  ('jelajah-banyuwangi-2-hari', 'pantai-pulau-merah', 1, 'Hari 1 — 14:00', 'Menikmati matahari terbenam.'),
-  ('jelajah-banyuwangi-2-hari', 'tn-baluran',         2, 'Hari 2 — 08:00', 'Melihat savana Afrika van Java.'),
-  ('eksplorasi-alam-banyuwangi', 'tn-baluran',        0, '08:00', 'Mengunjungi savana di pagi hari.'),
-  ('eksplorasi-alam-banyuwangi', 'tn-alas-purwo',     1, '13:00', 'Menjelajahi hutan dan pantai.')
+  ('eksplorasi-bali-fantasi', 'fly-bali', 0, '09:00', 'Keliling Bali dengan helikopter'),
+  ('eksplorasi-bali-fantasi', 'nuanu-creative-city', 1, '13:00', 'Magic Garden di Tabanan'),
+  ('eksplorasi-bali-fantasi', 'candyland', 2, '16:00', 'Bermain di dunia permen')
 ) as v(route_slug, dest_slug, order_index, time_schedule, notes)
 join public.destinations d on d.slug = v.dest_slug
 join public.routes r       on r.slug = v.route_slug
