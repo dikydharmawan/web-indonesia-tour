@@ -104,7 +104,7 @@ export default async function HomePage() {
             href="/destinasi"
             linkLabel={dict.home.featuredLink}
           />
-          <DestinationCarousel destinations={featured} />
+          <DestinationCarousel destinations={featured} dict={dict} />
         </div>
       </section>
 

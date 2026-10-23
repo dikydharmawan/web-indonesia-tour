@@ -427,7 +427,7 @@ export default async function DestinationDetailPage({ params }: PageProps) {
             </div>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
-                <DestinationCard key={item.id} destination={item} />
+                <DestinationCard key={item.id} destination={item} dict={dict} />
               ))}
             </div>
           </div>

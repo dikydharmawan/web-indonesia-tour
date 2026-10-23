@@ -142,6 +142,7 @@ export default async function DestinationsPage({
                 <DestinationCard
                   key={destination.id}
                   destination={destination}
+                  dict={dict}
                   priority={index < 4}
                 />
               ))}

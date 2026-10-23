@@ -2,10 +2,17 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { type Dictionary } from "@/shared/i18n-dictionaries";
 import DestinationCard from "@/client/components/destinations/DestinationCard";
 import type { Destination } from "@/types/db";
 
-export default function DestinationCarousel({ destinations }: { destinations: Destination[] }) {
+export default function DestinationCarousel({
+  destinations,
+  dict,
+}: {
+  destinations: Destination[];
+  dict: Dictionary;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Responsive: Show 1 on mobile, 2 on tablet, 4 on desktop
@@ -42,7 +49,7 @@ export default function DestinationCarousel({ destinations }: { destinations: De
         >
             {destinations.map((destination, index) => (
                 <div key={destination.id} className="min-w-[25%] flex-shrink-0 px-3">
-                    <DestinationCard destination={destination} priority={index === 0} />
+                    <DestinationCard destination={destination} dict={dict} priority={index === 0} />
                 </div>
             ))}
         </div>

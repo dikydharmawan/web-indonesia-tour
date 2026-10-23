@@ -2,19 +2,20 @@ import Link from "next/link";
 import { ArrowUpRight, MapPin, MoveUpRight, Orbit } from "lucide-react";
 import CoverImage from "@/client/components/ui/CoverImage";
 import Badge from "@/client/components/ui/Badge";
-import { getI18n } from "@/server/i18n";
+import { type Dictionary } from "@/shared/i18n-dictionaries";
 import { interpolate } from "@/shared/i18n-config";
 import { truncate } from "@/shared/utils";
 import type { Destination } from "@/types/db";
 
-export default async function DestinationCard({
+export default function DestinationCard({
   destination,
+  dict,
   priority = false,
 }: {
   destination: Destination;
+  dict: Dictionary;
   priority?: boolean;
 }) {
-  const { dict } = await getI18n();
 
   return (
     <article className="group relative h-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/10">
