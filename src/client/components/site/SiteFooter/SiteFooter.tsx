@@ -11,7 +11,7 @@ export default async function SiteFooter() {
     <footer className="border-t border-slate-800 bg-ink-950 text-slate-300">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div className="space-y-4 lg:col-span-2">
-          <Logo variant="light" />
+          <Logo variant="light" subtitle={dict.common.virtualTour} />
           <p className="max-w-md text-sm leading-relaxed text-slate-400">
             {dict.footer.tagline}
           </p>

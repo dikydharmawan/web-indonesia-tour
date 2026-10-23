@@ -38,7 +38,7 @@ export default async function HomePage() {
     .slice(0, 4)
     .map((destination) => ({
       title: destination.title,
-      location: "Bali",
+      location: destination.city ?? "Bali",
       panorama: destination.panorama_url,
       preview: destination.cover_image,
     }));

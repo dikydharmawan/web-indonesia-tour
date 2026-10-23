@@ -27,7 +27,7 @@ export default function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-lg">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
-          <Logo />
+          <Logo subtitle={dict.common.virtualTour} />
         </div>
 
         <nav

@@ -5,14 +5,16 @@ import { getThemeSettings } from "@/server/data/theme";
 import { getI18n } from "@/server/i18n";
 import { themeCssVars } from "@/shared/theme";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Jelajah Nusantara — Virtual Tour & Rute Wisata",
-    template: "%s | Jelajah Nusantara",
-  },
-  description:
-    "Jelajahi destinasi wisata Indonesia lewat panorama 360°, temukan rute perjalanan terkurasi, dan susun itinerary impianmu.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict } = await getI18n();
+  return {
+    title: {
+      default: `Jelajah Nusantara — ${dict.common.virtualTour}`,
+      template: "%s | Jelajah Nusantara",
+    },
+    description: dict.footer.tagline,
+  };
+}
 
 export default async function RootLayout({
   children,

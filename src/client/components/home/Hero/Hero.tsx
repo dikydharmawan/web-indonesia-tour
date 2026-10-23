@@ -51,7 +51,7 @@ export default function Hero(props: HeroProps) {
 
   const active = items[index] ?? items[0];
   const title = active.title;
-  const location = "Bali";
+  const location = active.location ?? "Bali";
   const panorama = active.panorama ?? "/media/panoramas/borobudur.jpg";
   const preview = active.preview ?? undefined;
 
@@ -106,9 +106,9 @@ export default function Hero(props: HeroProps) {
               {interpolate(dict.hero.badge, { location })}
             </Badge>
             <h1 className="font-display text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Jelajahi Wisata
+              {dict.hero.titleLine1}
               <span className="block text-brand-200">
-                Bali
+                {dict.hero.titleLine2}
               </span>
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
@@ -147,7 +147,7 @@ export default function Hero(props: HeroProps) {
                       goTo(index - 1);
                     }}
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-ink-950/40 text-white backdrop-blur transition hover:bg-ink-950/60"
-                    aria-label="Previous destination"
+                    aria-label={dict.common.previous}
                   >
                     <ChevronLeft className="h-4 w-4" aria-hidden />
                   </button>
@@ -158,7 +158,7 @@ export default function Hero(props: HeroProps) {
                       goTo(index + 1);
                     }}
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-ink-950/40 text-white backdrop-blur transition hover:bg-ink-950/60"
-                    aria-label="Next destination"
+                    aria-label={dict.common.next}
                   >
                     <ChevronRight className="h-4 w-4" aria-hidden />
                   </button>
@@ -177,7 +177,7 @@ export default function Hero(props: HeroProps) {
                             ? "w-6 bg-white"
                             : "w-1.5 bg-white/40 hover:bg-white/70",
                         )}
-                        aria-label={`Go to ${item.title}`}
+                        aria-label={`${dict.common.viewDestination}: ${item.title}`}
                       />
                     ))}
                   </div>

@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { type Dictionary } from "@/shared/i18n-dictionaries";
 import DestinationCard from "@/client/components/destinations/DestinationCard";
 import type { Destination } from "@/types/db";
+
+function getPerView() {
+  if (typeof window === "undefined") return 4;
+  if (window.matchMedia("(min-width: 1024px)").matches) return 4;
+  if (window.matchMedia("(min-width: 640px)").matches) return 2;
+  return 1;
+}
 
 export default function DestinationCarousel({
   destinations,
@@ -14,52 +21,62 @@ export default function DestinationCarousel({
   dict: Dictionary;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [perView, setPerView] = useState(4);
 
-  // Responsive: Show 1 on mobile, 2 on tablet, 4 on desktop
-  const itemsPerView = {
-    mobile: 1,
-    tablet: 2,
-    desktop: 4,
-  };
+  useEffect(() => {
+    const update = () => setPerView(getPerView());
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
-  const next = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.max(1, destinations.length - itemsPerView.desktop + 1));
-  };
+  const maxIndex = Math.max(0, destinations.length - perView);
+  const index = Math.min(currentIndex, maxIndex);
 
-  const prev = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
-  };
+  const next = () => setCurrentIndex(Math.min(index + 1, maxIndex));
+
+  const prev = () => setCurrentIndex(Math.max(index - 1, 0));
 
   return (
     <div className="relative mt-10 w-full">
-      <div className="relative overflow-hidden w-full">
-        {/* Buttons */}
+      <div className="relative w-full overflow-hidden">
         <button
           onClick={prev}
-          disabled={currentIndex === 0}
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 p-2 bg-white rounded-full shadow-lg border border-slate-200 disabled:opacity-50"
+          disabled={index === 0}
+          aria-label={dict.common.previous}
+          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-2 shadow-lg disabled:opacity-50"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="h-6 w-6 rtl:rotate-180" />
         </button>
-        
-        {/* Carousel Track */}
-        <div 
+
+        <div
           className="flex items-stretch transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView.desktop)}%)` }}
+          style={{
+            transform: `translateX(-${index * (100 / perView)}%)`,
+          }}
         >
-            {destinations.map((destination, index) => (
-                <div key={destination.id} className="w-1/4 shrink-0 px-3">
-                    <DestinationCard destination={destination} dict={dict} priority={index === 0} />
-                </div>
-            ))}
+          {destinations.map((destination, index) => (
+            <div
+              key={destination.id}
+              className="shrink-0 px-2 sm:px-3"
+              style={{ width: `${100 / perView}%` }}
+            >
+              <DestinationCard
+                destination={destination}
+                dict={dict}
+                priority={index < perView}
+              />
+            </div>
+          ))}
         </div>
 
         <button
           onClick={next}
-          disabled={currentIndex >= destinations.length - itemsPerView.desktop}
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 p-2 bg-white rounded-full shadow-lg border border-slate-200 disabled:opacity-50"
+          disabled={index >= maxIndex}
+          aria-label={dict.common.next}
+          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-2 shadow-lg disabled:opacity-50"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="h-6 w-6 rtl:rotate-180" />
         </button>
       </div>
     </div>

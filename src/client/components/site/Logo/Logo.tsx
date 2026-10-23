@@ -6,6 +6,7 @@ type LogoProps = {
   href?: string;
   variant?: "dark" | "light";
   compact?: boolean;
+  subtitle?: string;
   className?: string;
 };
 
@@ -13,6 +14,7 @@ export default function Logo({
   href = "/",
   variant = "dark",
   compact = false,
+  subtitle = "Virtual Tour & Rute",
   className,
 }: LogoProps) {
   return (
@@ -40,7 +42,7 @@ export default function Logo({
               variant === "light" ? "text-white/60" : "text-ink-600",
             )}
           >
-            Virtual Tour &amp; Rute
+            {subtitle}
           </span>
         )}
       </span>
