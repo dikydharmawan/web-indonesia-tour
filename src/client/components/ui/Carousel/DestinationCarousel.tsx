@@ -48,8 +48,10 @@ export default function DestinationCarousel({
           style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView.desktop)}%)` }}
         >
             {destinations.map((destination, index) => (
-                <div key={destination.id} className="min-w-[25%] flex-shrink-0 px-3">
-                    <DestinationCard destination={destination} dict={dict} priority={index === 0} />
+                <div key={destination.id} className="min-w-[25%] flex-shrink-0 px-3 flex">
+                    <div className="w-full">
+                        <DestinationCard destination={destination} dict={dict} priority={index === 0} />
+                    </div>
                 </div>
             ))}
         </div>
