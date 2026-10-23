@@ -9,6 +9,7 @@ import {
   UploadCloud,
 } from "lucide-react";
 import CoverImage from "@/client/components/ui/CoverImage";
+import { useI18n } from "@/client/i18n";
 
 export default function ImageUrlField({
   name,
@@ -27,6 +28,7 @@ export default function ImageUrlField({
   maxSizeMb?: number;
   aspect?: string;
 }) {
+  const { dict } = useI18n();
   const [value, setValue] = useState(defaultValue ?? "");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +38,7 @@ export default function ImageUrlField({
 
   async function handleUpload(file: File) {
     if (file.size > limitMb * 1024 * 1024) {
-      setError(`Ukuran berkas maksimal ${limitMb} MB.`);
+      setError(dict.admin.image.tooLarge.replace("{size}", String(limitMb)));
       return;
     }
 
@@ -57,12 +59,12 @@ export default function ImageUrlField({
       } | null;
 
       if (!response.ok || !data?.url) {
-        throw new Error(data?.error ?? "Gagal mengunggah gambar.");
+        throw new Error(data?.error ?? dict.admin.image.uploadFailed);
       }
       setValue(data.url);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Gagal mengunggah gambar.",
+        err instanceof Error ? err.message : dict.admin.image.uploadFailed,
       );
     } finally {
       setUploading(false);
@@ -81,7 +83,7 @@ export default function ImageUrlField({
         </label>
         <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
           <Link2 className="h-3 w-3" aria-hidden />
-          URL atau unggah
+          {dict.admin.image.urlOrUpload}
         </span>
       </div>
 
@@ -100,7 +102,7 @@ export default function ImageUrlField({
             inputMode="url"
             value={value}
             onChange={(event) => setValue(event.target.value)}
-            placeholder="https://… atau /api/media/…"
+            placeholder={dict.admin.image.urlPlaceholder}
             className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
           />
 
@@ -128,8 +130,8 @@ export default function ImageUrlField({
                 <UploadCloud className="h-3.5 w-3.5" aria-hidden />
               )}
               {uploading
-                ? "Mengunggah…"
-                : "Unggah gambar"}
+                ? dict.admin.image.uploading
+                : dict.admin.image.upload}
             </button>
             {value && (
               <button
@@ -138,7 +140,7 @@ export default function ImageUrlField({
                 className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-medium text-slate-500 transition hover:text-rose-600 disabled:opacity-50"
               >
                 <ImagePlus className="h-3.5 w-3.5" aria-hidden />
-                Kosongkan
+                {dict.admin.image.clear}
               </button>
             )}
           </div>

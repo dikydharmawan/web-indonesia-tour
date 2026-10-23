@@ -2,6 +2,7 @@ import Link from "next/link";
 import ImageUrlField from "@/client/components/admin/ImageUrlField";
 import SaveButton from "@/client/components/admin/SaveButton";
 import { createDestination, updateDestination } from "@/server/actions";
+import { getI18n } from "@/server/i18n";
 import type { Destination } from "@/types/db";
 
 const inputClass =
@@ -10,13 +11,15 @@ const inputClass =
 const labelClass =
   "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500";
 
-export default function DestinationForm({
+export default async function DestinationForm({
   destination,
   cancelHref,
 }: {
   destination?: Destination | null;
   cancelHref: string;
 }) {
+  const { dict } = await getI18n();
+  const t = dict.admin.form;
   const isEdit = Boolean(destination);
   const ticket = destination?.ticket_info;
   const hours = destination?.opening_hours;
@@ -33,35 +36,35 @@ export default function DestinationForm({
           <div className="flex items-start justify-between gap-4">
             <div>
               <h2 className="font-display text-xl font-semibold text-ink-900">
-                Informasi dasar
+                {t.basicInfo}
               </h2>
               <p className="mt-1 text-sm text-ink-600">
-                Nama, kategori, dan deskripsi yang tampil di halaman publik.
+                {t.basicInfoDesc}
               </p>
             </div>
             <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-              Wajib
+              {t.required}
             </span>
           </div>
 
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label htmlFor="title" className={labelClass}>
-                Nama destinasi *
+                {t.destinationName}
               </label>
               <input
                 id="title"
                 name="title"
                 required
                 defaultValue={destination?.title ?? ""}
-                placeholder="Contoh: Candi Borobudur"
+                placeholder={t.destinationNamePlaceholder}
                 className={inputClass}
               />
             </div>
 
             <div>
               <label htmlFor="slug" className={labelClass}>
-                Slug URL
+                {t.slug}
               </label>
               <input
                 id="slug"
@@ -71,20 +74,20 @@ export default function DestinationForm({
                 className={inputClass}
               />
               <p className="mt-1 text-[11px] text-slate-500">
-                Kosongkan untuk dibuat otomatis dari nama.
+                {t.slugHint}
               </p>
             </div>
 
             <div>
               <label htmlFor="category" className={labelClass}>
-                Kategori
+                {t.category}
               </label>
               <input
                 id="category"
                 name="category"
                 list="category-options"
                 defaultValue={destination?.category ?? ""}
-                placeholder="Budaya, Alam, Belanja…"
+                placeholder={t.categoryPlaceholder}
                 className={inputClass}
               />
               <datalist id="category-options">
@@ -98,7 +101,7 @@ export default function DestinationForm({
 
             <div>
               <label htmlFor="city" className={labelClass}>
-                Kota / kabupaten
+                {t.city}
               </label>
               <input
                 id="city"
@@ -111,7 +114,7 @@ export default function DestinationForm({
 
             <div>
               <label htmlFor="kecamatan" className={labelClass}>
-                Kecamatan
+                {t.district}
               </label>
               <input
                 id="kecamatan"
@@ -124,14 +127,14 @@ export default function DestinationForm({
 
             <div className="sm:col-span-2">
               <label htmlFor="description" className={labelClass}>
-                Deskripsi
+                {t.description}
               </label>
               <textarea
                 id="description"
                 name="description"
                 rows={7}
                 defaultValue={destination?.description ?? ""}
-                placeholder="Ceritakan daya tarik destinasi. Pisahkan paragraf dengan baris kosong."
+                placeholder={t.descriptionPlaceholder}
                 className={`${inputClass} resize-y leading-relaxed`}
               />
             </div>
@@ -140,29 +143,28 @@ export default function DestinationForm({
 
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="font-display text-xl font-semibold text-ink-900">
-            Media
+            {t.media}
           </h2>
           <p className="mt-1 text-sm text-ink-600">
-            Gunakan gambar landscape untuk cover dan panorama equirectangular
-            (rasio 2:1) untuk viewer 360°.
+            {t.mediaDesc}
           </p>
 
           <div className="mt-5 space-y-6">
             <ImageUrlField
               name="cover_image"
-              label="Gambar cover"
+              label={t.cover}
               defaultValue={destination?.cover_image}
               bucket="covers"
-              hint="Disarankan 1600×1000 px, format JPG/WebP, maksimal 5 MB."
+              hint={t.coverHint}
             />
             <div className="border-t border-slate-100 pt-6">
               <ImageUrlField
                 name="panorama_url"
-                label="Panorama 360°"
+                label={t.panorama}
                 defaultValue={destination?.panorama_url}
                 bucket="panoramas"
                 aspect="aspect-[2/1]"
-                hint="Foto equirectangular 360° dengan rasio 2:1 (contoh 4096×2048 px), maksimal 20 MB."
+                hint={t.panoramaHint}
               />
             </div>
           </div>
@@ -170,16 +172,16 @@ export default function DestinationForm({
 
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="font-display text-xl font-semibold text-ink-900">
-            Lokasi
+            {t.location}
           </h2>
           <p className="mt-1 text-sm text-ink-600">
-            Koordinat dipakai untuk marker peta dan tombol petunjuk arah.
+            {t.locationDesc}
           </p>
 
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="lat" className={labelClass}>
-                Latitude
+                {t.latitude}
               </label>
               <input
                 id="lat"
@@ -195,7 +197,7 @@ export default function DestinationForm({
             </div>
             <div>
               <label htmlFor="lng" className={labelClass}>
-                Longitude
+                {t.longitude}
               </label>
               <input
                 id="lng"
@@ -214,16 +216,16 @@ export default function DestinationForm({
 
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="font-display text-xl font-semibold text-ink-900">
-            Informasi kunjungan
+            {t.visitInfo}
           </h2>
           <p className="mt-1 text-sm text-ink-600">
-            Tiket, jam buka, dan fasilitas. Semua kolom opsional.
+            {t.visitInfoDesc}
           </p>
 
           <div className="mt-5 grid gap-4 sm:grid-cols-3">
             <div>
               <label htmlFor="ticket_adult" className={labelClass}>
-                Tiket dewasa (Rp)
+                {t.ticketAdult}
               </label>
               <input
                 id="ticket_adult"
@@ -238,7 +240,7 @@ export default function DestinationForm({
             </div>
             <div>
               <label htmlFor="ticket_child" className={labelClass}>
-                Tiket anak (Rp)
+                {t.ticketChild}
               </label>
               <input
                 id="ticket_child"
@@ -253,7 +255,7 @@ export default function DestinationForm({
             </div>
             <div>
               <label htmlFor="ticket_vehicle" className={labelClass}>
-                Kendaraan (Rp)
+                {t.ticketVehicle}
               </label>
               <input
                 id="ticket_vehicle"
@@ -268,7 +270,7 @@ export default function DestinationForm({
             </div>
             <div className="sm:col-span-3">
               <label htmlFor="ticket_notes" className={labelClass}>
-                Catatan tiket
+                {t.ticketNotes}
               </label>
               <input
                 id="ticket_notes"
@@ -276,7 +278,7 @@ export default function DestinationForm({
                 defaultValue={
                   typeof ticket?.notes === "string" ? ticket.notes : ""
                 }
-                placeholder="Tiket terusan, parkir, dll."
+                placeholder={t.ticketNotesPlaceholder}
                 className={inputClass}
               />
             </div>
@@ -285,7 +287,7 @@ export default function DestinationForm({
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="hours_open" className={labelClass}>
-                    Jam buka
+                    {t.hoursOpen}
                   </label>
                   <input
                     id="hours_open"
@@ -297,7 +299,7 @@ export default function DestinationForm({
                 </div>
                 <div>
                   <label htmlFor="hours_close" className={labelClass}>
-                    Jam tutup
+                    {t.hoursClose}
                   </label>
                   <input
                     id="hours_close"
@@ -312,23 +314,23 @@ export default function DestinationForm({
 
             <div className="sm:col-span-3">
               <label htmlFor="hours_days" className={labelClass}>
-                Hari buka
+                {t.hoursDays}
               </label>
               <input
                 id="hours_days"
                 name="hours_days"
                 defaultValue={hours?.days?.join(", ") ?? ""}
-                placeholder="Setiap hari"
+                placeholder={t.hoursDaysPlaceholder}
                 className={inputClass}
               />
               <p className="mt-1 text-[11px] text-slate-500">
-                Pisahkan dengan koma, contoh: Senin, Selasa, Rabu.
+                {t.hoursDaysHint}
               </p>
             </div>
 
             <div className="sm:col-span-3">
               <label htmlFor="hours_notes" className={labelClass}>
-                Catatan jam buka
+                {t.hoursNotes}
               </label>
               <input
                 id="hours_notes"
@@ -336,24 +338,24 @@ export default function DestinationForm({
                 defaultValue={
                   typeof hours?.notes === "string" ? hours.notes : ""
                 }
-                placeholder="Tutup pada hari libur nasional."
+                placeholder={t.hoursNotesPlaceholder}
                 className={inputClass}
               />
             </div>
 
             <div className="sm:col-span-3 border-t border-slate-100 pt-4">
               <label htmlFor="facilities" className={labelClass}>
-                Fasilitas
+                {t.facilities}
               </label>
               <input
                 id="facilities"
                 name="facilities"
                 defaultValue={destination?.facilities?.join(", ") ?? ""}
-                placeholder="Parkir, Musholla, Toilet, Kantin"
+                placeholder={t.facilitiesPlaceholder}
                 className={inputClass}
               />
               <p className="mt-1 text-[11px] text-slate-500">
-                Pisahkan dengan koma.
+                {t.facilitiesHint}
               </p>
             </div>
           </div>
@@ -362,17 +364,17 @@ export default function DestinationForm({
 
       <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/95 px-5 py-4 shadow-lg backdrop-blur">
         <p className="text-xs text-slate-500">
-          Perubahan akan langsung tampil di situs publik.
+          {t.saveNote}
         </p>
         <div className="flex items-center gap-3">
           <Link
             href={cancelHref}
             className="rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-ink-700 transition hover:bg-slate-50"
           >
-            Batal
+            {dict.admin.common.cancel}
           </Link>
           <SaveButton
-            label={isEdit ? "Simpan perubahan" : "Tambahkan destinasi"}
+            label={isEdit ? t.saveChanges : t.addDestinationAction}
           />
         </div>
       </div>

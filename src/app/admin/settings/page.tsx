@@ -3,79 +3,74 @@ import { Map, Palette, Route as RouteIcon } from "lucide-react";
 import FlashMessage from "@/client/components/admin/FlashMessage";
 import ThemeForm from "@/client/components/admin/ThemeForm";
 import { getThemeSettings } from "@/server/data/theme";
+import { getI18n } from "@/server/i18n";
+import { localizeText } from "@/shared/content-i18n";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = { title: "Tampilan" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict } = await getI18n();
+  return { title: dict.admin.meta.settings };
+}
 
 type SearchParams = Promise<{ error?: string; saved?: string }>;
-
-const CONFIG_SUMMARY = [
-  {
-    icon: Map,
-    title: "Destinasi",
-    items: [
-      "Judul, slug, deskripsi, kategori, kota",
-      "Gambar cover dan panorama 360°",
-      "Koordinat peta, info tiket, jam buka",
-      "Daftar fasilitas",
-    ],
-  },
-  {
-    icon: RouteIcon,
-    title: "Rute wisata",
-    items: [
-      "Judul, slug, ringkasan, durasi",
-      "Gambar cover dan status draf/terbit",
-      "Urutan destinasi, jadwal, catatan",
-    ],
-  },
-  {
-    icon: Palette,
-    title: "Tampilan",
-    items: [
-      "Warna utama (tombol dan tautan)",
-      "Warna aksen (label dan highlight)",
-      "Warna gelap (judul dan panel)",
-    ],
-  },
-];
 
 export default async function AdminSettingsPage({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
+  const { locale, dict } = await getI18n();
+  const t = dict.admin.theme;
   const { error, saved } = await searchParams;
+  const errorMessage = localizeText(error, locale);
+  const savedMessage = localizeText(saved, locale);
   const theme = await getThemeSettings();
+
+  const configSummary = [
+    {
+      icon: Map,
+      title: t.destGroup,
+      items: [t.destItem1, t.destItem2, t.destItem3, t.destItem4],
+    },
+    {
+      icon: RouteIcon,
+      title: t.routeGroup,
+      items: [t.routeItem1, t.routeItem2, t.routeItem3],
+    },
+    {
+      icon: Palette,
+      title: t.appearanceGroup,
+      items: [t.appearanceItem1, t.appearanceItem2, t.appearanceItem3],
+    },
+  ];
 
   return (
     <div className="space-y-6">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">
-          Pengaturan
+          {t.eyebrow}
         </p>
         <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-ink-900">
-          Tampilan & tema
+          {t.title}
         </h1>
-        <p className="mt-1 text-sm text-ink-600">
-          Sesuaikan warna situs agar selaras dengan identitas destinasi Anda.
-        </p>
+        <p className="mt-1 text-sm text-ink-600">{t.desc}</p>
       </div>
 
-      <FlashMessage error={error} saved={saved} />
+      <FlashMessage
+        error={errorMessage ?? undefined}
+        saved={savedMessage ?? undefined}
+      />
 
       <ThemeForm initial={theme} />
 
       <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
         <h2 className="font-display text-lg font-semibold text-ink-900">
-          Yang bisa diatur dari admin
+          {t.configTitle}
         </h2>
-        <p className="mt-1 text-xs text-slate-500">
-          Ringkasan konten dan tampilan yang tersedia di dashboard.
-        </p>
+        <p className="mt-1 text-xs text-slate-500">{t.configDesc}</p>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {CONFIG_SUMMARY.map((group) => (
+          {configSummary.map((group) => (
             <div
               key={group.title}
               className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4"

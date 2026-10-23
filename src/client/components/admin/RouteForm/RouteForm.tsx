@@ -12,6 +12,8 @@ import {
 import ImageUrlField from "@/client/components/admin/ImageUrlField";
 import SaveButton from "@/client/components/admin/SaveButton";
 import { createRoute, updateRoute } from "@/server/actions";
+import { useI18n } from "@/client/i18n";
+import { interpolate } from "@/shared/i18n-config";
 import type { Destination, RouteWithItems } from "@/types/db";
 
 const inputClass =
@@ -36,6 +38,8 @@ export default function RouteForm({
   destinations: Destination[];
   cancelHref: string;
 }) {
+  const { dict } = useI18n();
+  const t = dict.admin.form;
   const isEdit = Boolean(route);
   const [items, setItems] = useState<EditableItem[]>(() =>
     (route?.route_items ?? []).map((item) => ({
@@ -102,31 +106,30 @@ export default function RouteForm({
       <fieldset className="space-y-6">
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="font-display text-xl font-semibold text-ink-900">
-            Informasi rute
+            {t.routeInfo}
           </h2>
           <p className="mt-1 text-sm text-ink-600">
-            Rute berstatus draf hanya terlihat oleh admin dan tidak muncul di
-            situs publik.
+            {t.routeInfoDesc}
           </p>
 
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label htmlFor="title" className={labelClass}>
-                Nama rute *
+                {t.routeName}
               </label>
               <input
                 id="title"
                 name="title"
                 required
                 defaultValue={route?.title ?? ""}
-                placeholder="Contoh: Jogja Heritage 2 Hari"
+                placeholder={t.routeNamePlaceholder}
                 className={inputClass}
               />
             </div>
 
             <div>
               <label htmlFor="slug" className={labelClass}>
-                Slug URL
+                {t.slug}
               </label>
               <input
                 id="slug"
@@ -136,13 +139,13 @@ export default function RouteForm({
                 className={inputClass}
               />
               <p className="mt-1 text-[11px] text-slate-500">
-                Kosongkan untuk dibuat otomatis dari nama.
+                {t.slugHint}
               </p>
             </div>
 
             <div>
               <label htmlFor="duration_days" className={labelClass}>
-                Durasi (hari)
+                {t.duration}
               </label>
               <input
                 id="duration_days"
@@ -157,7 +160,7 @@ export default function RouteForm({
 
             <div>
               <label htmlFor="status" className={labelClass}>
-                Status
+                {t.status}
               </label>
               <select
                 id="status"
@@ -165,21 +168,21 @@ export default function RouteForm({
                 defaultValue={route?.status ?? "draft"}
                 className={`${inputClass} cursor-pointer`}
               >
-                <option value="draft">Draf — hanya admin</option>
-                <option value="published">Terbit — tampil publik</option>
+                <option value="draft">{t.statusDraft}</option>
+                <option value="published">{t.statusPublished}</option>
               </select>
             </div>
 
             <div className="sm:col-span-2">
               <label htmlFor="summary" className={labelClass}>
-                Ringkasan
+                {t.summary}
               </label>
               <textarea
                 id="summary"
                 name="summary"
                 rows={4}
                 defaultValue={route?.summary ?? ""}
-                placeholder="Jelaskan tema dan alur perjalanan rute ini."
+                placeholder={t.summaryPlaceholder}
                 className={`${inputClass} resize-y leading-relaxed`}
               />
             </div>
@@ -187,10 +190,10 @@ export default function RouteForm({
             <div className="sm:col-span-2 border-t border-slate-100 pt-4">
               <ImageUrlField
                 name="cover_image"
-                label="Gambar cover rute"
+                label={t.routeCover}
                 defaultValue={route?.cover_image}
                 bucket="covers"
-                hint="Disarankan 1600×1000 px, format JPG/WebP, maksimal 5 MB."
+                hint={t.coverHint}
               />
             </div>
           </div>
@@ -200,11 +203,10 @@ export default function RouteForm({
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h2 className="font-display text-xl font-semibold text-ink-900">
-                Itinerary
+                {t.itinerary}
               </h2>
               <p className="mt-1 text-sm text-ink-600">
-                Susun urutan kunjungan. Nomor mengikuti posisi dari atas ke
-                bawah.
+                {t.itineraryDesc}
               </p>
             </div>
             <button
@@ -214,24 +216,23 @@ export default function RouteForm({
               className="inline-flex items-center gap-1.5 rounded-full bg-brand-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               <Plus className="h-3.5 w-3.5" aria-hidden />
-              Tambah perhentian
+              {t.addStop}
             </button>
           </div>
 
           {destinations.length === 0 && (
             <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-              Belum ada destinasi. Tambahkan destinasi terlebih dahulu sebelum
-              menyusun rute.
+              {t.noDestinations}
             </p>
           )}
 
           {items.length === 0 ? (
             <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-5 py-10 text-center">
               <p className="text-sm font-medium text-ink-700">
-                Belum ada perhentian
+                {t.noStopsTitle}
               </p>
               <p className="mt-1 text-xs text-slate-500">
-                Klik “Tambah perhentian” untuk memilih destinasi pertama.
+                {t.noStopsDesc}
               </p>
             </div>
           ) : (
@@ -252,7 +253,7 @@ export default function RouteForm({
                     <div className="min-w-0 flex-1 space-y-2">
                       <div className="grid gap-2 sm:grid-cols-[1.4fr_1fr]">
                         <label className="block">
-                          <span className="sr-only">Destinasi</span>
+                          <span className="sr-only">{dict.admin.destinations.title}</span>
                           <select
                             required
                             value={item.destination_id}
@@ -263,7 +264,7 @@ export default function RouteForm({
                             }
                             className={`${inputClass} cursor-pointer`}
                           >
-                            <option value="">Pilih destinasi…</option>
+                            <option value="">{t.pickDestination}</option>
                             {destinations.map((destination) => (
                               <option key={destination.id} value={destination.id}>
                                 {destination.title}
@@ -273,7 +274,7 @@ export default function RouteForm({
                           </select>
                         </label>
                         <label className="block">
-                          <span className="sr-only">Jadwal</span>
+                          <span className="sr-only">{t.schedule}</span>
                           <input
                             value={item.time_schedule}
                             onChange={(event) =>
@@ -281,19 +282,19 @@ export default function RouteForm({
                                 time_schedule: event.target.value,
                               })
                             }
-                            placeholder="Hari 1 — 09:00"
+                            placeholder={t.schedulePlaceholder}
                             className={inputClass}
                           />
                         </label>
                       </div>
                       <label className="block">
-                        <span className="sr-only">Catatan</span>
+                        <span className="sr-only">{t.notes}</span>
                         <input
                           value={item.notes}
                           onChange={(event) =>
                             updateItem(item.key, { notes: event.target.value })
                           }
-                          placeholder="Catatan untuk perhentian ini (opsional)"
+                          placeholder={t.notesPlaceholder}
                           className={inputClass}
                         />
                       </label>
@@ -305,7 +306,7 @@ export default function RouteForm({
                         onClick={() => moveItem(index, -1)}
                         disabled={index === 0}
                         className="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100 disabled:opacity-40"
-                        aria-label="Naikkan perhentian"
+                        aria-label={t.moveUp}
                       >
                         <ArrowUp className="h-3.5 w-3.5" aria-hidden />
                       </button>
@@ -314,7 +315,7 @@ export default function RouteForm({
                         onClick={() => moveItem(index, 1)}
                         disabled={index === items.length - 1}
                         className="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100 disabled:opacity-40"
-                        aria-label="Turunkan perhentian"
+                        aria-label={t.moveDown}
                       >
                         <ArrowDown className="h-3.5 w-3.5" aria-hidden />
                       </button>
@@ -322,7 +323,7 @@ export default function RouteForm({
                         type="button"
                         onClick={() => removeItem(item.key)}
                         className="grid h-8 w-8 place-items-center rounded-lg border border-rose-200 bg-white text-rose-600 transition hover:bg-rose-50"
-                        aria-label="Hapus perhentian"
+                        aria-label={t.removeStop}
                       >
                         <Trash2 className="h-3.5 w-3.5" aria-hidden />
                       </button>
@@ -337,17 +338,18 @@ export default function RouteForm({
 
       <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/95 px-5 py-4 shadow-lg backdrop-blur">
         <p className="text-xs text-slate-500">
-          {items.filter((item) => item.destination_id).length} perhentian siap
-          disimpan.
+          {interpolate(t.stopsReady, {
+            count: items.filter((item) => item.destination_id).length,
+          })}
         </p>
         <div className="flex items-center gap-3">
           <Link
             href={cancelHref}
             className="rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-ink-700 transition hover:bg-slate-50"
           >
-            Batal
+            {dict.admin.common.cancel}
           </Link>
-          <SaveButton label={isEdit ? "Simpan perubahan" : "Buat rute"} />
+          <SaveButton label={isEdit ? t.saveChanges : t.createRouteAction} />
         </div>
       </div>
     </form>

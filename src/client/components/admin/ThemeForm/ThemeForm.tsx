@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Check, Palette, Sparkles } from "lucide-react";
 import { saveTheme } from "@/server/actions";
+import { useI18n } from "@/client/i18n";
+import { localizeText } from "@/shared/content-i18n";
 import SaveButton from "@/client/components/admin/SaveButton";
 import {
   buildPalette,
@@ -15,29 +17,18 @@ import {
 } from "@/shared/theme";
 import { cn } from "@/shared/utils";
 
-const FIELDS: Array<{
-  key: ThemeColorKey;
-  label: string;
-  hint: string;
-}> = [
-  {
-    key: "brand",
-    label: "Warna utama",
-    hint: "Tombol, tautan, ikon, dan sorotan utama.",
-  },
-  {
-    key: "accent",
-    label: "Warna aksen",
-    hint: "Label kecil, lencana, dan elemen highlight.",
-  },
-  {
-    key: "ink",
-    label: "Warna gelap",
-    hint: "Judul teks dan panel gelap. Pilih warna sangat gelap agar teks tetap terbaca.",
-  },
-];
-
 export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
+  const { dict, locale } = useI18n();
+  const t = dict.admin.theme;
+  const fields: Array<{
+    key: ThemeColorKey;
+    label: string;
+    hint: string;
+  }> = [
+    { key: "brand", label: t.mainColor, hint: t.mainColorHint },
+    { key: "accent", label: t.accentColor, hint: t.accentColorHint },
+    { key: "ink", label: t.darkColor, hint: t.darkColorHint },
+  ];
   const [values, setValues] = useState<ThemeSettings>(() =>
     normalizeTheme(initial),
   );
@@ -79,17 +70,16 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
         <div>
           <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-ink-900">
             <Palette className="h-4 w-4 text-brand-700" aria-hidden />
-            Palet warna
+            {t.palette}
           </h2>
           <p className="mt-1 text-xs leading-relaxed text-slate-500">
-            Pilih preset lalu sesuaikan bila perlu. Perubahan langsung dipakai
-            di seluruh halaman publik dan dashboard.
+            {t.paletteDesc}
           </p>
         </div>
 
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-            Preset
+            {t.preset}
           </p>
           <div className="mt-2 grid gap-2 sm:grid-cols-2">
             {THEME_PRESETS.map((preset) => {
@@ -120,7 +110,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-1.5 text-xs font-semibold text-ink-900">
-                      {preset.label}
+                      {localizeText(preset.label, locale)}
                       {active && (
                         <Check
                           className="h-3.5 w-3.5 text-brand-700"
@@ -129,7 +119,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                       )}
                     </span>
                     <span className="mt-0.5 block text-[11px] leading-snug text-slate-500">
-                      {preset.description}
+                      {localizeText(preset.description, locale)}
                     </span>
                   </span>
                 </button>
@@ -139,7 +129,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
         </div>
 
         <div className="space-y-4 border-t border-slate-100 pt-5">
-          {FIELDS.map((field) => {
+          {fields.map((field) => {
             const value = text[field.key];
             const invalid = normalizeHex(value) === null;
             return (
@@ -163,7 +153,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                     type="color"
                     value={values[field.key]}
                     onChange={(event) => pick(field.key, event.target.value)}
-                    aria-label={`Pilih ${field.label.toLowerCase()}`}
+                    aria-label={t.pickColor.replace("{label}", field.label)}
                     className="h-10 w-12 cursor-pointer rounded-xl border border-slate-200 bg-white p-0.5"
                   />
                   <input
@@ -175,7 +165,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                     spellCheck={false}
                     autoComplete="off"
                     pattern="^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
-                    title="Gunakan format hex, misalnya #0d9488"
+                    title={t.hexHint}
                     className={cn(
                       "w-28 rounded-xl border px-3 py-2 font-mono text-xs uppercase text-ink-900 outline-none transition focus:ring-2",
                       invalid
@@ -191,9 +181,9 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-5">
           <p className="text-[11px] text-slate-500">
-            Tema tersimpan permanen di database.
+            {t.savedPermanently}
           </p>
-          <SaveButton label="Simpan tema" />
+          <SaveButton label={t.saveTheme} />
         </div>
       </form>
 
@@ -201,7 +191,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
         <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4">
           <Sparkles className="h-4 w-4 text-brand-700" aria-hidden />
           <h2 className="font-display text-lg font-semibold text-ink-900">
-            Pratinjau
+            {t.preview}
           </h2>
         </div>
 
@@ -224,7 +214,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                 className="rounded-full px-2.5 py-1 text-[10px] font-semibold text-white"
                 style={{ backgroundColor: palettes.brand[700] }}
               >
-                Jelajahi
+                {t.explore}
               </span>
             </div>
 
@@ -239,21 +229,20 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                   color: palettes.accent[900],
                 }}
               >
-                Panorama 360°
+                {t.previewBadge}
               </span>
               <div>
                 <p
                   className="font-display text-lg font-semibold"
                   style={{ color: palettes.ink[900] }}
                 >
-                  Candi Borobudur
+                  {t.previewTitle}
                 </p>
                 <p
                   className="mt-1 text-xs leading-relaxed"
                   style={{ color: palettes.ink[600] }}
                 >
-                  Susuri lorong relief dan nikmati matahari terbit dari teras
-                  candi.
+                  {t.previewDesc}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -261,7 +250,7 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                   className="rounded-full px-3 py-1.5 text-xs font-semibold text-white"
                   style={{ backgroundColor: palettes.brand[700] }}
                 >
-                  Lihat rute
+                  {t.previewRoute}
                 </span>
                 <span
                   className="rounded-full border bg-white px-3 py-1.5 text-xs font-semibold"
@@ -270,15 +259,14 @@ export default function ThemeForm({ initial }: { initial: ThemeSettings }) {
                     color: palettes.brand[800],
                   }}
                 >
-                  Detail
+                  {t.previewDetail}
                 </span>
               </div>
             </div>
           </div>
 
           <p className="mt-3 text-[11px] leading-relaxed text-slate-500">
-            Pratinjau memakai palet yang dihasilkan otomatis dari tiga warna di
-            atas. Warna bawaan mempertahankan tampilan awal situs.
+            {t.previewNote}
           </p>
         </div>
       </section>

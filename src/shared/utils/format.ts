@@ -6,17 +6,26 @@ export function formatRupiah(value: number): string {
   }).format(value);
 }
 
-export function formatDate(value: string | Date): string {
+import { LOCALE_META, type Locale } from "@/shared/i18n-config";
+
+export function formatDate(
+  value: string | Date,
+  locale: Locale = "id",
+): string {
   const date = typeof value === "string" ? new Date(value) : value;
-  return new Intl.DateTimeFormat("id-ID", {
+  return new Intl.DateTimeFormat(LOCALE_META[locale].htmlLang, {
     day: "numeric",
     month: "long",
     year: "numeric",
   }).format(date);
 }
 
-export function formatDuration(days: number): string {
-  return days === 1 ? "1 hari" : `${days} hari`;
+export function formatDuration(days: number, locale: Locale = "id"): string {
+  return new Intl.NumberFormat(LOCALE_META[locale].htmlLang, {
+    style: "unit",
+    unit: "day",
+    unitDisplay: "long",
+  }).format(days);
 }
 
 export function truncate(value: string | null | undefined, length = 140): string {

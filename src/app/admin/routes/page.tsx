@@ -17,9 +17,15 @@ import {
   toggleRouteStatus,
 } from "@/server/actions";
 import { listRoutesWithItems } from "@/server/data/routes";
+import { getI18n } from "@/server/i18n";
+import { localizeText } from "@/shared/content-i18n";
+import { interpolate } from "@/shared/i18n-config";
 import { formatDate, formatDuration } from "@/shared/utils";
 
-export const metadata: Metadata = { title: "Rute Wisata" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict } = await getI18n();
+  return { title: dict.admin.meta.routes };
+}
 
 type SearchParams = Promise<{ error?: string; saved?: string }>;
 
@@ -28,7 +34,11 @@ export default async function AdminRoutesPage({
 }: {
   searchParams: SearchParams;
 }) {
+  const { locale, dict } = await getI18n();
+  const t = dict.admin.routes;
   const { error, saved } = await searchParams;
+  const errorMessage = localizeText(error, locale);
+  const savedMessage = localizeText(saved, locale);
   const routes = await listRoutesWithItems({ includeDrafts: true });
   const published = routes.filter((route) => route.status === "published").length;
 
@@ -37,14 +47,17 @@ export default async function AdminRoutesPage({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">
-            Konten
+            {dict.admin.common.content}
           </p>
           <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-ink-900">
-            Rute wisata
+            {t.title}
           </h1>
           <p className="mt-1 text-sm text-ink-600">
-            {routes.length} rute · {published} terbit · {routes.length - published}{" "}
-            draf
+            {interpolate(t.summary, {
+              total: routes.length,
+              published,
+              draft: routes.length - published,
+            })}
           </p>
         </div>
         <Link
@@ -52,19 +65,19 @@ export default async function AdminRoutesPage({
           className="inline-flex items-center gap-1.5 rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800"
         >
           <Plus className="h-4 w-4" aria-hidden />
-          Buat rute
+          {t.create}
         </Link>
       </div>
 
-      <FlashMessage error={error} saved={saved} />
+      <FlashMessage error={errorMessage ?? undefined} saved={savedMessage ?? undefined} />
 
       {routes.length === 0 ? (
         <EmptyState
           icon={RouteIcon}
-          title="Belum ada rute"
-          description="Susun rute pertama dengan memilih destinasi dan mengatur urutan kunjungan."
+          title={t.emptyTitle}
+          description={t.emptyDesc}
           actionHref="/admin/routes/new"
-          actionLabel="Buat rute"
+          actionLabel={t.emptyAction}
         />
       ) : (
         <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -72,11 +85,11 @@ export default async function AdminRoutesPage({
             <table className="w-full min-w-[900px] text-left text-sm">
               <thead className="bg-slate-50 text-[11px] uppercase tracking-wider text-slate-500">
                 <tr>
-                  <th className="px-5 py-3 font-semibold">Rute</th>
-                  <th className="px-4 py-3 font-semibold">Status</th>
-                  <th className="px-4 py-3 font-semibold">Itinerary</th>
-                  <th className="px-4 py-3 font-semibold">Diperbarui</th>
-                  <th className="px-5 py-3 text-right font-semibold">Aksi</th>
+                  <th className="px-5 py-3 font-semibold">{t.colRoute}</th>
+                  <th className="px-4 py-3 font-semibold">{t.colStatus}</th>
+                  <th className="px-4 py-3 font-semibold">{t.colItinerary}</th>
+                  <th className="px-4 py-3 font-semibold">{t.colUpdated}</th>
+                  <th className="px-5 py-3 text-right font-semibold">{t.colActions}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -97,10 +110,11 @@ export default async function AdminRoutesPage({
                               href={`/admin/routes/${route.id}/edit`}
                               className="block truncate font-semibold text-ink-900 hover:text-brand-700"
                             >
-                              {route.title}
+                              {localizeText(route.title, locale)}
                             </Link>
                             <p className="truncate text-xs text-slate-500">
-                              {formatDuration(route.duration_days)} · /rute/{route.slug}
+                              {formatDuration(route.duration_days, locale)} ·
+                              /rute/{route.slug}
                             </p>
                           </div>
                         </div>
@@ -109,7 +123,9 @@ export default async function AdminRoutesPage({
                         <Badge
                           variant={route.status === "published" ? "brand" : "amber"}
                         >
-                          {route.status === "published" ? "Terbit" : "Draf"}
+                          {route.status === "published"
+                            ? dict.admin.common.published
+                            : dict.admin.common.draft}
                         </Badge>
                       </td>
                       <td className="px-4 py-3">
@@ -119,23 +135,26 @@ export default async function AdminRoutesPage({
                               key={item.id}
                               className="truncate text-xs text-slate-600"
                             >
-                              {index + 1}. {item.destination?.title ?? "—"}
+                              {index + 1}.{" "}
+                              {localizeText(item.destination?.title, locale) ?? "—"}
                             </li>
                           ))}
                           {route.route_items.length > 3 && (
                             <li className="text-[11px] text-slate-400">
-                              +{route.route_items.length - 3} perhentian lain
+                              {interpolate(t.moreStops, {
+                                count: route.route_items.length - 3,
+                              })}
                             </li>
                           )}
                           {route.route_items.length === 0 && (
                             <li className="text-xs text-amber-700">
-                              Belum ada perhentian
+                              {t.noStops}
                             </li>
                           )}
                         </ol>
                       </td>
                       <td className="px-4 py-3 text-xs text-slate-500">
-                        {formatDate(route.updated_at)}
+                        {formatDate(route.updated_at, locale)}
                       </td>
                       <td className="px-5 py-3">
                         <div className="flex flex-wrap items-center justify-end gap-2">
@@ -149,12 +168,12 @@ export default async function AdminRoutesPage({
                               {route.status === "published" ? (
                                 <>
                                   <EyeOff className="h-3.5 w-3.5" aria-hidden />
-                                  Jadikan draf
+                                  {t.makeDraft}
                                 </>
                               ) : (
                                 <>
                                   <Eye className="h-3.5 w-3.5" aria-hidden />
-                                  Terbitkan
+                                  {t.publish}
                                 </>
                               )}
                             </button>
@@ -164,12 +183,14 @@ export default async function AdminRoutesPage({
                             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 transition hover:bg-slate-50"
                           >
                             <Edit3 className="h-3.5 w-3.5" aria-hidden />
-                            Edit
+                            {dict.admin.common.edit}
                           </Link>
                           <form action={deleteRoute}>
                             <input type="hidden" name="id" value={route.id} />
                             <DeleteButton
-                              confirmText={`Hapus rute “${route.title}”? Semua perhentian di dalamnya ikut terhapus.`}
+                              confirmText={interpolate(t.deleteConfirm, {
+                                title: localizeText(route.title, locale) ?? "",
+                              })}
                             />
                           </form>
                         </div>

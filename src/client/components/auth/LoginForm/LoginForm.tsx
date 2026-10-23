@@ -13,6 +13,7 @@ import {
 import { useFormStatus } from "react-dom";
 import { login } from "@/server/actions";
 import { useI18n } from "@/client/i18n";
+import { localizeText } from "@/shared/content-i18n";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -45,20 +46,21 @@ export default function LoginForm({
   next: string;
   error?: string;
 }) {
-  const { dict } = useI18n();
+  const { dict, locale } = useI18n();
   const [showPassword, setShowPassword] = useState(false);
+  const errorMessage = localizeText(error, locale);
 
   return (
     <form action={login} className="space-y-5">
       <input type="hidden" name="next" value={next} />
 
-      {error && (
+      {errorMessage && (
         <div
           role="alert"
           className="flex items-start gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
         >
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-          {error}
+          {errorMessage}
         </div>
       )}
 

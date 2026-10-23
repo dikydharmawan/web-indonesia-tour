@@ -14,26 +14,48 @@ import {
   X,
 } from "lucide-react";
 import Logo from "@/client/components/site/Logo";
+import { useI18n } from "@/client/i18n";
 import { logout } from "@/server/actions";
 import { cn } from "@/shared/utils";
 
-const NAV = [
-  { href: "/admin", label: "Ringkasan", icon: LayoutDashboard, exact: true },
-  { href: "/admin/destinations", label: "Destinasi", icon: Map, exact: false },
-  { href: "/admin/routes", label: "Rute Wisata", icon: RouteIcon, exact: false },
-  { href: "/admin/settings", label: "Tampilan", icon: Palette, exact: false },
-];
-
 export default function AdminSidebar({ email }: { email: string | null }) {
   const pathname = usePathname();
+  const { dict } = useI18n();
   const [open, setOpen] = useState(false);
+
+  const nav = [
+    {
+      href: "/admin",
+      label: dict.admin.sidebar.summary,
+      icon: LayoutDashboard,
+      exact: true,
+    },
+    {
+      href: "/admin/destinations",
+      label: dict.admin.sidebar.destinations,
+      icon: Map,
+      exact: false,
+    },
+    {
+      href: "/admin/routes",
+      label: dict.admin.sidebar.routes,
+      icon: RouteIcon,
+      exact: false,
+    },
+    {
+      href: "/admin/settings",
+      label: dict.admin.sidebar.appearance,
+      icon: Palette,
+      exact: false,
+    },
+  ];
 
   const isActive = (href: string, exact: boolean) =>
     exact ? pathname === href : pathname.startsWith(href);
 
-  const nav = (
-    <nav className="space-y-1" aria-label="Navigasi admin">
-      {NAV.map((item) => (
+  const navLinks = (
+    <nav className="space-y-1" aria-label={dict.admin.common.navLabel}>
+      {nav.map((item) => (
         <Link
           key={item.href}
           href={item.href}
@@ -56,10 +78,10 @@ export default function AdminSidebar({ email }: { email: string | null }) {
     <div className="space-y-3">
       <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
         <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-          Masuk sebagai
+          {dict.admin.common.signedInAs}
         </p>
         <p className="mt-0.5 truncate text-xs font-medium text-slate-200">
-          {email ?? "Administrator"}
+          {email ?? dict.admin.common.administrator}
         </p>
       </div>
       <Link
@@ -67,7 +89,7 @@ export default function AdminSidebar({ email }: { email: string | null }) {
         className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white"
       >
         <ExternalLink className="h-4 w-4" aria-hidden />
-        Lihat situs publik
+        {dict.admin.common.viewPublicSite}
       </Link>
       <form action={logout}>
         <button
@@ -75,7 +97,7 @@ export default function AdminSidebar({ email }: { email: string | null }) {
           className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-rose-500/10 hover:text-rose-300"
         >
           <LogOut className="h-4 w-4" aria-hidden />
-          Keluar
+          {dict.admin.common.logout}
         </button>
       </form>
     </div>
@@ -87,9 +109,9 @@ export default function AdminSidebar({ email }: { email: string | null }) {
         <div>
           <Logo variant="light" href="/admin" compact />
           <p className="mt-1 pl-[52px] text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-            Dashboard
+            {dict.admin.common.dashboard}
           </p>
-          <div className="mt-8">{nav}</div>
+          <div className="mt-8">{navLinks}</div>
         </div>
         <div className="mt-6">{footer}</div>
       </aside>
@@ -101,7 +123,9 @@ export default function AdminSidebar({ email }: { email: string | null }) {
           onClick={() => setOpen((value) => !value)}
           className="grid h-10 w-10 place-items-center rounded-xl border border-white/15 text-white"
           aria-expanded={open}
-          aria-label={open ? "Tutup menu admin" : "Buka menu admin"}
+          aria-label={
+            open ? dict.admin.common.closeMenu : dict.admin.common.openMenu
+          }
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -109,7 +133,7 @@ export default function AdminSidebar({ email }: { email: string | null }) {
 
       {open && (
         <div className="sticky top-16 z-30 border-b border-white/10 bg-ink-950 px-4 py-4 lg:hidden">
-          {nav}
+          {navLinks}
           <div className="mt-4 border-t border-white/10 pt-4">{footer}</div>
         </div>
       )}
