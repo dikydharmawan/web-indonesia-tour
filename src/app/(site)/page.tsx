@@ -21,17 +21,21 @@ import {
 } from "@/server/data/destinations";
 import { listRoutesWithItems } from "@/server/data/routes";
 import { getI18n } from "@/server/i18n";
+import { localizeDestination, localizeRoute } from "@/shared/content-i18n";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const { dict } = await getI18n();
-  const [featured, routes, stats, filters] = await Promise.all([
+  const { locale, dict } = await getI18n();
+  const [featuredRaw, routesRaw, stats, filters] = await Promise.all([
     getFeaturedDestinations(4),
     listRoutesWithItems(),
     getSiteStats(),
     getFilterOptions(),
   ]);
+
+  const featured = featuredRaw.map((item) => localizeDestination(item, locale));
+  const routes = routesRaw.map((item) => localizeRoute(item, locale));
 
   const heroItems = featured
     .filter((destination) => destination.panorama_url)

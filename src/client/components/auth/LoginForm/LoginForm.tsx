@@ -12,9 +12,11 @@ import {
 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { login } from "@/server/actions";
+import { useI18n } from "@/client/i18n";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const { dict } = useI18n();
   return (
     <button
       type="submit"
@@ -24,11 +26,11 @@ function SubmitButton() {
       {pending ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          Memproses…
+          {dict.login.processing}
         </>
       ) : (
         <>
-          Masuk ke dashboard
+          {dict.login.submit}
           <ArrowRight className="h-4 w-4" aria-hidden />
         </>
       )}
@@ -43,6 +45,7 @@ export default function LoginForm({
   next: string;
   error?: string;
 }) {
+  const { dict } = useI18n();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -64,7 +67,7 @@ export default function LoginForm({
           htmlFor="email"
           className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500"
         >
-          Email
+          {dict.login.email}
         </label>
         <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-brand-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-100">
           <Mail className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
@@ -85,7 +88,7 @@ export default function LoginForm({
           htmlFor="password"
           className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500"
         >
-          Kata sandi
+          {dict.login.password}
         </label>
         <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-brand-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-100">
           <Lock className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
@@ -102,7 +105,7 @@ export default function LoginForm({
             type="button"
             onClick={() => setShowPassword((value) => !value)}
             className="text-slate-400 transition hover:text-ink-700"
-            aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
+            aria-label={showPassword ? dict.login.hidePassword : dict.login.showPassword}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" aria-hidden />
@@ -116,7 +119,7 @@ export default function LoginForm({
       <SubmitButton />
 
       <p className="text-center text-xs leading-relaxed text-slate-500">
-        Gunakan akun admin yang terdaftar di database.
+        {dict.login.note}
       </p>
     </form>
   );

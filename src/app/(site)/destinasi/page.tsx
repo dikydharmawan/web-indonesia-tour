@@ -10,6 +10,7 @@ import {
 } from "@/server/data/destinations";
 import { getI18n } from "@/server/i18n";
 import { interpolate } from "@/shared/i18n-config";
+import { localizeDestination, localizeText } from "@/shared/content-i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -46,21 +47,25 @@ export default async function DestinationsPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { dict } = await getI18n();
+  const { locale, dict } = await getI18n();
   const params = await searchParams;
   const q = params.q?.trim() ?? "";
   const category = params.category?.trim() ?? "";
   const city = params.city?.trim() ?? "";
 
-  const [destinations, filters] = await Promise.all([
+  const [destinationsRaw, filters] = await Promise.all([
     listDestinations({ q, category, city }),
     getFilterOptions(),
   ]);
 
+  const destinations = destinationsRaw.map((item) =>
+    localizeDestination(item, locale),
+  );
+
   const activeFilters = [
     q ? { key: "q" as const, label: `“${q}”` } : null,
-    category ? { key: "category" as const, label: category } : null,
-    city ? { key: "city" as const, label: city } : null,
+    category ? { key: "category" as const, label: localizeText(category, locale) ?? category } : null,
+    city ? { key: "city" as const, label: localizeText(city, locale) ?? city } : null,
   ].filter(Boolean) as Array<{
     key: "q" | "category" | "city";
     label: string;

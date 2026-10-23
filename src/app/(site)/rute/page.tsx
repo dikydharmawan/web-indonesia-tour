@@ -5,6 +5,7 @@ import EmptyState from "@/client/components/ui/EmptyState";
 import { listRoutesWithItems } from "@/server/data/routes";
 import { getI18n } from "@/server/i18n";
 import { interpolate } from "@/shared/i18n-config";
+import { localizeRoute } from "@/shared/content-i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -17,8 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RoutesPage() {
-  const { dict } = await getI18n();
-  const routes = await listRoutesWithItems();
+  const { locale, dict } = await getI18n();
+  const routesRaw = await listRoutesWithItems();
+  const routes = routesRaw.map((item) => localizeRoute(item, locale));
 
   return (
     <>

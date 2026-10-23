@@ -207,6 +207,16 @@ export default function PannellumViewer({
           strings: {
             loadButtonLabel: dict.pannellum.load,
             loadingLabel: cfg.loadingText,
+            fileAccessError: dict.pannellum.fileAccessError,
+            malformedURLError: dict.pannellum.malformedURLError,
+            iOS8WebGLError: dict.pannellum.iOS8WebGLError,
+            genericWebGLError: dict.pannellum.genericWebGLError,
+            textureSizeError: dict.pannellum.textureSizeError,
+            unknownError: dict.pannellum.unknownError,
+            twoTouchActivate: dict.pannellum.twoTouchActivate,
+            twoTouchXActivate: dict.pannellum.twoTouchXActivate,
+            twoTouchYActivate: dict.pannellum.twoTouchYActivate,
+            ctrlZoomActivate: dict.pannellum.ctrlZoomActivate,
           },
         };
 
@@ -277,7 +287,7 @@ export default function PannellumViewer({
       viewer?.destroy();
       viewerRef.current = null;
     };
-  }, [configKey, dict.pannellum.load]);
+  }, [configKey, dict.pannellum]);
 
   const hasSource = (scenes?.length ?? 0) > 0 || Boolean(src);
   const status: Status = !hasSource

@@ -22,6 +22,7 @@ import { getI18n } from "@/server/i18n";
 import { interpolate } from "@/shared/i18n-config";
 import type { Dictionary } from "@/shared/i18n-dictionaries";
 import type { RouteWithItems } from "@/types/db";
+import { localizeRoute } from "@/shared/content-i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -33,11 +34,12 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const [route, { dict }] = await Promise.all([
+  const [routeRaw, { locale, dict }] = await Promise.all([
     getRouteBySlug(slug),
     getI18n(),
   ]);
-  if (!route) return { title: dict.route.metaNotFound };
+  if (!routeRaw) return { title: dict.route.metaNotFound };
+  const route = localizeRoute(routeRaw, locale);
 
   return {
     title: route.title,
@@ -93,14 +95,19 @@ function buildTour(route: RouteWithItems, dict: Dictionary) {
 }
 
 export default async function RouteDetailPage({ params }: PageProps) {
-  const { dict } = await getI18n();
+  const { locale, dict } = await getI18n();
   const { slug } = await params;
-  const route = await getRouteBySlug(slug);
+  const routeRaw = await getRouteBySlug(slug);
 
-  if (!route || route.status !== "published") notFound();
+  if (!routeRaw || routeRaw.status !== "published") notFound();
+
+  const route = localizeRoute(routeRaw, locale);
 
   const allRoutes = await listRoutesWithItems();
-  const otherRoutes = allRoutes.filter((item) => item.id !== route.id).slice(0, 2);
+  const otherRoutes = allRoutes
+    .filter((item) => item.id !== route.id)
+    .slice(0, 2)
+    .map((item) => localizeRoute(item, locale));
 
   const items = route.route_items;
   const tour = buildTour(route, dict);

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useI18n } from "@/client/i18n";
+import { localizeText } from "@/shared/content-i18n";
 import type { FilterOption } from "@/types/db";
 
 type DestinationSearchProps = {
@@ -23,7 +24,7 @@ export default function DestinationSearch({
   className,
 }: DestinationSearchProps) {
   const router = useRouter();
-  const { dict } = useI18n();
+  const { locale, dict } = useI18n();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -70,7 +71,7 @@ export default function DestinationSearch({
             <option value="">{dict.search.allCategories}</option>
             {categories.map((option) => (
               <option key={option.value} value={option.value}>
-                {option.value} ({option.count})
+                {localizeText(option.value, locale)} ({option.count})
               </option>
             ))}
           </select>
@@ -86,7 +87,7 @@ export default function DestinationSearch({
             <option value="">{dict.search.allCities}</option>
             {cities.map((option) => (
               <option key={option.value} value={option.value}>
-                {option.value} ({option.count})
+                {localizeText(option.value, locale)} ({option.count})
               </option>
             ))}
           </select>

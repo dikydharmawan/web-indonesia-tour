@@ -29,6 +29,10 @@ import { getRoutesForDestination } from "@/server/data/routes";
 import { getI18n } from "@/server/i18n";
 import { interpolate } from "@/shared/i18n-config";
 import { formatRupiah } from "@/shared/utils";
+import {
+  localizeDestination,
+  localizeRoute,
+} from "@/shared/content-i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -40,11 +44,12 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const [destination, { dict }] = await Promise.all([
+  const [destinationRaw, { locale, dict }] = await Promise.all([
     getDestinationBySlug(slug),
     getI18n(),
   ]);
-  if (!destination) return { title: dict.destination.metaNotFound };
+  if (!destinationRaw) return { title: dict.destination.metaNotFound };
+  const destination = localizeDestination(destinationRaw, locale);
 
   return {
     title: destination.title,
@@ -60,16 +65,19 @@ export async function generateMetadata({
 }
 
 export default async function DestinationDetailPage({ params }: PageProps) {
-  const { dict } = await getI18n();
+  const { locale, dict } = await getI18n();
   const { slug } = await params;
-  const destination = await getDestinationBySlug(slug);
+  const destinationRaw = await getDestinationBySlug(slug);
 
-  if (!destination) notFound();
+  if (!destinationRaw) notFound();
 
-  const [related, routes] = await Promise.all([
-    getRelatedDestinations(destination, 3),
-    getRoutesForDestination(destination.id),
+  const destination = localizeDestination(destinationRaw, locale);
+  const [relatedRaw, routesRaw] = await Promise.all([
+    getRelatedDestinations(destinationRaw, 3),
+    getRoutesForDestination(destinationRaw.id),
   ]);
+  const related = relatedRaw.map((item) => localizeDestination(item, locale));
+  const routes = routesRaw.map((item) => localizeRoute(item, locale));
 
   const ticket = destination.ticket_info;
   const hours = destination.opening_hours;
