@@ -44,11 +44,11 @@ export default function DestinationCarousel({
         
         {/* Carousel Track */}
         <div 
-          className="flex gap-6 transition-transform duration-500 ease-in-out"
+          className="flex items-start gap-6 transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView.desktop)}%)` }}
         >
             {destinations.map((destination, index) => (
-                <div key={destination.id} className="min-w-[25%] flex flex-shrink-0 px-3">
+                <div key={destination.id} className="min-w-[25%] flex-shrink-0 px-3">
                     <DestinationCard destination={destination} dict={dict} priority={index === 0} />
                 </div>
             ))}
