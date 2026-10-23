@@ -63,7 +63,7 @@ export default function DestinationCard({
             </span>
           </div>
           <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-600">
-            {truncate(destination.description, 120)}
+            {truncate(destination.description, 100)}
           </p>
           <div className="mt-4 flex items-center gap-3 border-t border-slate-100 pt-3 text-xs text-slate-500">
             {destination.facilities.slice(0, 2).map((facility) => (
