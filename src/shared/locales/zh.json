@@ -17,8 +17,7 @@
     "destinationCount": "{count} 个目的地",
     "placeCount": "{count} 个地点",
     "durationDays": "{count} 天",
-    "moreCount": "另有 {count} 项",
-    "testKey": "这是一个测试"
+    "moreCount": "另有 {count} 项"
   },
   "nav": {
     "home": "首页",
