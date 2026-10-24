@@ -1,4 +1,4 @@
-export const LOCALES = ["zh", "en", "ar", "id"] as const;
+export const LOCALES = ["zh", "en"] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
@@ -12,8 +12,6 @@ export const LOCALE_META: Record<
 > = {
   zh: { label: "简体中文", short: "中文", dir: "ltr", htmlLang: "zh-CN" },
   en: { label: "English", short: "English", dir: "ltr", htmlLang: "en" },
-  ar: { label: "العربية", short: "العربية", dir: "rtl", htmlLang: "ar" },
-  id: { label: "Bahasa Indonesia", short: "Indonesia", dir: "ltr", htmlLang: "id" },
 };
 
 export function isLocale(value: unknown): value is Locale {
