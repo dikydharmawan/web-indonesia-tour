@@ -7,6 +7,7 @@ export type Dictionary = typeof zh;
 export const dictionaries: Record<Locale, Dictionary> = {
   zh,
   en,
+  id: zh, // Use Chinese as fallback for ID for now, or you can create id.json
 };
 
 export const getDictionary = (locale: Locale): Dictionary => dictionaries[locale] || dictionaries.zh;
