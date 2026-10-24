@@ -7,7 +7,7 @@ import type {
   TicketInfo,
 } from "@/types/db";
 
-type Translation = Partial<Record<"zh" | "en", string>>;
+type Translation = Partial<Record<"zh" | "en" | "id", string>>;
 
 /**
  * Terjemahan istilah/konten yang tersimpan di database.
@@ -167,6 +167,7 @@ export function localizeText(
   locale: Locale,
 ): string | null {
   if (!value) return value ?? null;
+  if (locale === "id") return value;
   if (locale !== "zh" && locale !== "en") return value;
   return CONTENT_TERMS[value]?.[locale] ?? value;
 }
