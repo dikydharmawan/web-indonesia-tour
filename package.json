@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "db:setup": "node scripts/db-setup.mjs"
+    "db:setup": "node scripts/db-setup.mjs",
+    "translate": "node scripts/translate.mjs"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^18.0.9",
     "framer-motion": "14.4.0",
     "leaflet": "1.9.4",
     "lucide-react": "1.60.0",
     "next": "16.4.2",
+    "openai": "^7.43.0",
     "pannellum": "2.5.7",
     "pg": "^8.23.1",
     "react": "19.3.1",
