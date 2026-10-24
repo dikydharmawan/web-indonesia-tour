@@ -167,7 +167,7 @@ export function localizeText(
   locale: Locale,
 ): string | null {
   if (!value) return value ?? null;
-  if (locale === "id") return value;
+  if (locale === "id" || locale === "ar") return value;
   return CONTENT_TERMS[value]?.[locale] ?? value;
 }
 

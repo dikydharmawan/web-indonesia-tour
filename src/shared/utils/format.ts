@@ -10,7 +10,7 @@ import { LOCALE_META, type Locale } from "@/shared/i18n-config";
 
 export function formatDate(
   value: string | Date,
-  locale: Locale = "id",
+  locale: Locale = "zh",
 ): string {
   const date = typeof value === "string" ? new Date(value) : value;
   return new Intl.DateTimeFormat(LOCALE_META[locale].htmlLang, {
@@ -20,7 +20,7 @@ export function formatDate(
   }).format(date);
 }
 
-export function formatDuration(days: number, locale: Locale = "id"): string {
+export function formatDuration(days: number, locale: Locale = "zh"): string {
   return new Intl.NumberFormat(LOCALE_META[locale].htmlLang, {
     style: "unit",
     unit: "day",
