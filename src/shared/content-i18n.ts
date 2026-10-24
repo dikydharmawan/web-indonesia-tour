@@ -168,7 +168,6 @@ export function localizeText(
 ): string | null {
   if (!value) return value ?? null;
   if (locale === "id") return value;
-  if (locale !== "zh" && locale !== "en") return value;
   return CONTENT_TERMS[value]?.[locale] ?? value;
 }
 
